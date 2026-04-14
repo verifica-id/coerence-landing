@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>coherenceLab — Arquitectura de IA para operaciones que escalan sin caos</title>
+<meta name="description" content="Diseñamos e implementamos sistemas de arquitectura de IA que optimizan operaciones, reducen costos invisibles y dan control total al decisor con datos en tiempo real. No vendemos automatizaciones sueltas: vendemos sistemas." />
+<meta name="theme-color" content="#0A0E1A" />
+<link rel="icon" type="image/svg+xml" href="coerens_icon.svg" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="coherenceLab — Arquitectura de IA para operaciones que escalan sin caos" />
+<meta property="og:description" content="Sistemas completos de IA que integran procesos automatizados, datos conectados y dashboards en tiempo real. Competimos por criterio, no por precio." />
+<meta property="og:url" content="https://coerence.tech" />
+<meta property="og:site_name" content="coherenceLab" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        ink:      "#0A0E1A",
+        ink2:     "#111726",
+        ivory:    "#F7F6F2",
+        paper:    "#FBFAF7",
+        line:     "#1C2333",
+        accent:   "#815BD4",
+        accent2:  "#A78BFA",
+        muted:    "#64748B",
+      },
+      fontFamily: {
+        sans:    ['Inter', 'ui-sans-serif', 'system-ui'],
+        display: ['Fraunces', 'ui-serif', 'Georgia'],
+      },
+      letterSpacing: {
+        tightest: '-0.035em',
+      }
+    }
+  }
+}
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "ss01","cv11"; }
+
+  /* Grid background pattern */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .bg-grid-light {
+    background-image:
+      linear-gradient(to right, rgba(10,14,26,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,14,26,0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .radial-fade {
+    background: radial-gradient(ellipse at 50% 0%, rgba(129,91,212,0.22), rgba(10,14,26,0) 60%);
+  }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s cubic-bezier(.2,.6,.2,1), transform .8s cubic-bezier(.2,.6,.2,1); }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* Gradient text */
+  .grad-text {
+    background: linear-gradient(90deg, #ffffff 0%, #CBD5E1 60%, #815BD4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Dotted ring */
+  .ring-dotted {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1px, transparent 1.5px);
+    background-size: 14px 14px;
+  }
+
+  /* Subtle noise */
+  .noise::before {
+    content:"";
+    position:absolute; inset:0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    pointer-events:none; opacity:.6;
+  }
+
+  /* Nav active */
+  .nav-link { position:relative; }
+  .nav-link::after {
+    content:""; position:absolute; left:0; right:0; bottom:-6px; height:1px; background:#815BD4;
+    transform:scaleX(0); transform-origin:left; transition:transform .3s ease;
+  }
+  .nav-link:hover::after { transform:scaleX(1); }
+
+  /* Button hover */
+  .btn-primary { transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 30px -12px rgba(129,91,212,.55); }
+
+  /* Card */
+  .card { transition: transform .4s cubic-bezier(.2,.6,.2,1), border-color .3s ease, background .3s ease; }
+  .card:hover { transform: translateY(-4px); border-color: rgba(129,91,212,.4); }
+
+  /* Marquee */
+  .marquee { mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  @keyframes scroll-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-track { animation: scroll-x 40s linear infinite; }
+
+  /* FAQ */
+  details[open] .faq-icon { transform: rotate(45deg); }
+  .faq-icon { transition: transform .25s ease; }
+</style>
+</head>
+
+<body class="bg-ivory text-ink antialiased font-sans selection:bg-accent/25 selection:text-ink">
+
+<!-- ============== NAV ============== -->
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur bg-ivory/70 border-b border-ink/5">
+  <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#hero" class="flex items-center gap-2 group" aria-label="coherenceLab">
+      <img src="coerens_logo.svg" alt="coherenceLab" class="h-7 w-auto" />
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm text-ink/70">
+      <a class="nav-link" href="#beneficios">Sistema</a>
+      <a class="nav-link" href="#metodologia">Metodología</a>
+      <a class="nav-link" href="#equipo">Equipo</a>
+      <a class="nav-link" href="#faqs">FAQs</a>
+    </div>
+    <a href="#contacto" class="btn-primary hidden md:inline-flex items-center gap-2 bg-ink text-ivory text-sm font-medium px-4 py-2 rounded-full">
+      Agendar diagnóstico
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#contacto" class="md:hidden text-sm font-medium text-ink underline decoration-accent underline-offset-4">Contactar</a>
+  </nav>
+</header>
+
+<!-- ============== HERO ============== -->
+<section id="hero" class="relative overflow-hidden bg-ink text-ivory noise">
+  <div class="absolute inset-0 bg-grid opacity-60"></div>
+  <div class="absolute inset-0 radial-fade"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 pt-40 pb-28 md:pt-52 md:pb-40">
+    <div class="reveal max-w-4xl">
+      <div class="inline-flex items-center gap-2 border border-white/15 bg-white/[.03] backdrop-blur px-3 py-1.5 rounded-full text-xs text-white/80">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+        Arquitectura de IA · no automatizaciones sueltas
+      </div>
+
+      <h1 class="font-display mt-8 text-[44px] leading-[1.03] md:text-[76px] md:leading-[.98] tracking-tightest grad-text">
+        Operaciones que escalan sin caos,<br class="hidden md:block"/> con datos en tiempo real.
+      </h1>
+
+      <p class="mt-8 max-w-2xl text-lg md:text-xl text-white/70 leading-relaxed">
+        Diseñamos e implementamos <span class="text-white font-medium">sistemas completos de IA</span> que integran procesos automatizados, datos conectados y dashboards gerenciales. El decisor recupera el control. El equipo deja de apagar incendios.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href="#contacto" class="btn-primary inline-flex items-center gap-2 bg-accent text-ink font-semibold px-6 py-3.5 rounded-full text-sm">
+          Agenda un diagnóstico
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#metodologia" class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white">
+          <span class="w-8 h-8 grid place-items-center rounded-full border border-white/20 group-hover:border-white">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          Ver metodología completa
+        </a>
+      </div>
+
+      <!-- Stat strip -->
+      <dl class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl">
+        <div>
+          <dt class="text-xs uppercase tracking-wider text-white/50">Horas perdidas</dt>
+          <dd class="mt-1 text-2xl font-display font-semibold">~4h / día</dd>
+          <p class="text-xs text-white/50">en operativa manual típica</p>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wider text-white/50">Costo del caos</dt>
+          <dd class="mt-1 text-2xl font-display font-semibold">$30K–$100K</dd>
+          <p class="text-xs text-white/50">USD / mes en medianas</p>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wider text-white/50">Framework</dt>
+          <dd class="mt-1 text-2xl font-display font-semibold">5 capas</dd>
+          <p class="text-xs text-white/50">backend → gobernanza</p>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-wider text-white/50">Entrega</dt>
+          <dd class="mt-1 text-2xl font-display font-semibold">8 fases</dd>
+          <p class="text-xs text-white/50">diagnóstico → optimización</p>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Floating panel -->
+    <div class="reveal mt-20 relative mx-auto max-w-5xl">
+      <div class="absolute -inset-6 bg-accent/10 blur-3xl rounded-[2rem]"></div>
+      <div class="relative border border-white/10 rounded-2xl bg-gradient-to-b from-white/[.05] to-white/[.02] backdrop-blur p-6 md:p-8">
+        <div class="flex items-center justify-between text-xs text-white/50 mb-6">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-accent"></span>
+            control operativo · live
+          </div>
+          <span>coherence.ops / panel</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="p-4 rounded-xl bg-white/[.03] border border-white/5">
+            <div class="text-[11px] text-white/50 uppercase tracking-wider">Procesos automatizados</div>
+            <div class="mt-2 flex items-end gap-1"><span class="text-2xl font-semibold">87%</span><span class="text-accent text-xs mb-1">+12</span></div>
+            <div class="mt-3 h-1.5 rounded-full bg-white/10"><div class="h-full w-[87%] rounded-full bg-accent"></div></div>
+          </div>
+          <div class="p-4 rounded-xl bg-white/[.03] border border-white/5">
+            <div class="text-[11px] text-white/50 uppercase tracking-wider">Horas-hombre/sem</div>
+            <div class="mt-2 text-2xl font-semibold">-42h</div>
+            <svg class="mt-2" viewBox="0 0 120 28" width="100%" height="28"><polyline fill="none" stroke="#815BD4" stroke-width="2" points="0,22 15,20 30,24 45,16 60,14 75,9 90,11 105,6 120,4"/></svg>
+          </div>
+          <div class="p-4 rounded-xl bg-white/[.03] border border-white/5">
+            <div class="text-[11px] text-white/50 uppercase tracking-wider">Errores manuales</div>
+            <div class="mt-2 text-2xl font-semibold">-81%</div>
+            <div class="mt-3 flex gap-0.5">
+              <span class="h-4 w-1 rounded-sm bg-accent/80"></span>
+              <span class="h-3 w-1 rounded-sm bg-accent/60"></span>
+              <span class="h-5 w-1 rounded-sm bg-accent"></span>
+              <span class="h-2 w-1 rounded-sm bg-accent/40"></span>
+              <span class="h-4 w-1 rounded-sm bg-accent/70"></span>
+              <span class="h-6 w-1 rounded-sm bg-accent"></span>
+              <span class="h-3 w-1 rounded-sm bg-accent/50"></span>
+            </div>
+          </div>
+          <div class="p-4 rounded-xl bg-white/[.03] border border-white/5">
+            <div class="text-[11px] text-white/50 uppercase tracking-wider">ROI acumulado</div>
+            <div class="mt-2 text-2xl font-semibold">3.4×</div>
+            <div class="mt-2 text-[11px] text-white/50">a 6 meses post-go-live</div>
+          </div>
+        </div>
+        <div class="mt-6 ring-dotted h-14 rounded-xl border border-white/5"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust marquee -->
+  <div class="relative border-t border-white/5 py-6">
+    <div class="marquee overflow-hidden">
+      <div class="marquee-track flex gap-14 whitespace-nowrap text-xs uppercase tracking-[0.2em] text-white/40">
+        <span>↳ diagnóstico operativo</span><span>· framework 5 capas</span><span>· datos conectados</span><span>· gobernanza de IA</span><span>· dashboards gerenciales</span><span>· gestión del cambio</span>
+        <span>↳ diagnóstico operativo</span><span>· framework 5 capas</span><span>· datos conectados</span><span>· gobernanza de IA</span><span>· dashboards gerenciales</span><span>· gestión del cambio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== BENEFICIOS (3 pilares) ============== -->
+<section id="beneficios" class="relative py-28 md:py-40">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.22em] text-muted">02 · El sistema</p>
+      <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+        Tres pilares inseparables. <span class="text-muted">Vender uno sin los otros es incompleto.</span>
+      </h2>
+      <p class="mt-6 text-lg text-ink/70 max-w-2xl">
+        Los dashboards solos son "Power BI bonito con data inútil". Los procesos sin datos son automatizaciones sueltas. La arquitectura real conecta los tres.
+      </p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-3 gap-5">
+      <!-- Pilar 1 -->
+      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-xl grid place-items-center bg-ink text-ivory mb-6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h10M4 12h16M4 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="font-display text-2xl leading-tight">Procesos 100% automatizados</h3>
+        <p class="mt-4 text-ink/70 leading-relaxed">Eliminamos cuellos de botella, reprocesos y errores manuales. Tu equipo deja de perder horas en tareas que ningún humano debería hacer.</p>
+        <ul class="mt-6 space-y-2 text-sm text-ink/70">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Ciclos de mejora continua</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Orquestación entre áreas</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>SLAs medibles</li>
+        </ul>
+      </article>
+
+      <!-- Pilar 2 -->
+      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-xl grid place-items-center bg-ink text-ivory mb-6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="8" ry="3" stroke="currentColor" stroke-width="2"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <h3 class="font-display text-2xl leading-tight">Datos conectados entre áreas</h3>
+        <p class="mt-4 text-ink/70 leading-relaxed">Base escalable, áreas interconectadas (no silos), reportería precisa y en tiempo real. Una sola fuente de verdad para todo el negocio.</p>
+        <ul class="mt-6 space-y-2 text-sm text-ink/70">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Trazabilidad end-to-end</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Integración con tus sistemas</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Gobernanza y seguridad</li>
+        </ul>
+      </article>
+
+      <!-- Pilar 3 -->
+      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-xl grid place-items-center bg-ink text-ivory mb-6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="font-display text-2xl leading-tight">Métricas en tiempo real</h3>
+        <p class="mt-4 text-ink/70 leading-relaxed">El decisor deja de gobernar por intuición. Dashboards gerenciales, reportes automáticos y modelos predictivos que hablan el lenguaje del C-suite.</p>
+        <ul class="mt-6 space-y-2 text-sm text-ink/70">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Control gerencial en vivo</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Alertas operativas</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Modelos predictivos</li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- Value line -->
+    <div class="reveal mt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-t border-ink/10 pt-10">
+      <p class="font-display text-2xl md:text-3xl max-w-3xl leading-snug">
+        "No necesitas más herramientas.<br class="hidden md:block"/> Necesitas <span class="text-accent">arquitectura</span>."
+      </p>
+      <a href="#contacto" class="inline-flex items-center gap-2 text-sm font-medium text-ink underline underline-offset-4 decoration-accent">
+        Habla con un arquitecto
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FEATURES (5 capas + metodología) ============== -->
+<section id="metodologia" class="relative bg-ink text-ivory overflow-hidden">
+  <div class="absolute inset-0 bg-grid opacity-40"></div>
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 py-28 md:py-40">
+    <div class="grid md:grid-cols-12 gap-12">
+      <div class="md:col-span-5">
+        <p class="reveal text-xs uppercase tracking-[0.22em] text-white/50">03 · Framework</p>
+        <h2 class="reveal mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+          Cinco capas. <span class="text-white/50">Un sistema coherente.</span>
+        </h2>
+        <p class="reveal mt-6 text-white/70 leading-relaxed max-w-md">
+          Así es como mapeamos cualquier solución de IA empresarial. Si alguna capa falta, el sistema se cae. Si todas están resueltas, el decisor tiene control total.
+        </p>
+
+        <div class="reveal mt-10 p-6 rounded-2xl border border-white/10 bg-white/[.02]">
+          <p class="text-xs uppercase tracking-wider text-white/50">Principio de independencia</p>
+          <p class="mt-3 text-white/85 leading-relaxed">
+            El cliente debe poder operar sin el consultor. El know-how vive en el sistema, no en personas.
+          </p>
+        </div>
+      </div>
+
+      <div class="md:col-span-7">
+        <ol class="space-y-3">
+          <!-- Layer row template -->
+          <li class="reveal group card border border-white/10 rounded-xl p-5 md:p-6 bg-white/[.02] flex items-start gap-5">
+            <span class="font-display text-3xl text-white/40 w-10 shrink-0">01</span>
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <h3 class="font-semibold text-lg">Backend</h3>
+                <span class="text-[11px] uppercase tracking-wider text-white/40">Infraestructura</span>
+              </div>
+              <p class="mt-1 text-white/65 text-sm">Servidores, APIs e integraciones entre sistemas existentes.</p>
+            </div>
+          </li>
+          <li class="reveal group card border border-white/10 rounded-xl p-5 md:p-6 bg-white/[.02] flex items-start gap-5">
+            <span class="font-display text-3xl text-white/40 w-10 shrink-0">02</span>
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <h3 class="font-semibold text-lg">Frontend</h3>
+                <span class="text-[11px] uppercase tracking-wider text-white/40">Interfaz</span>
+              </div>
+              <p class="mt-1 text-white/65 text-sm">Dashboards, formularios y portales internos pensados para adopción real.</p>
+            </div>
+          </li>
+          <li class="reveal group card border border-accent/30 rounded-xl p-5 md:p-6 bg-accent/[.06] flex items-start gap-5">
+            <span class="font-display text-3xl text-accent/70 w-10 shrink-0">03</span>
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <h3 class="font-semibold text-lg">Data</h3>
+                <span class="text-[11px] uppercase tracking-wider text-accent">El corazón</span>
+              </div>
+              <p class="mt-1 text-white/80 text-sm">Captura, limpieza, clasificación, almacenamiento y trazabilidad. Sin esto, ninguna IA funciona.</p>
+            </div>
+          </li>
+          <li class="reveal group card border border-white/10 rounded-xl p-5 md:p-6 bg-white/[.02] flex items-start gap-5">
+            <span class="font-display text-3xl text-white/40 w-10 shrink-0">04</span>
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <h3 class="font-semibold text-lg">Inteligencia</h3>
+                <span class="text-[11px] uppercase tracking-wider text-white/40">IA aplicada</span>
+              </div>
+              <p class="mt-1 text-white/65 text-sm">Modelos, agentes, NLP y ML predictivo sobre cimientos sólidos. No cosmética.</p>
+            </div>
+          </li>
+          <li class="reveal group card border border-white/10 rounded-xl p-5 md:p-6 bg-white/[.02] flex items-start gap-5">
+            <span class="font-display text-3xl text-white/40 w-10 shrink-0">05</span>
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <h3 class="font-semibold text-lg">Gobernanza</h3>
+                <span class="text-[11px] uppercase tracking-wider text-white/40">Seguridad & compliance</span>
+              </div>
+              <p class="mt-1 text-white/65 text-sm">Protocolos de acceso, seguridad de datos y políticas de uso de IA para equipos que ya usan ChatGPT sin control.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Metodología 8 fases -->
+    <div class="mt-24 md:mt-32">
+      <div class="reveal flex flex-wrap items-end justify-between gap-6 mb-10">
+        <div>
+          <p class="text-xs uppercase tracking-[0.22em] text-white/50">Entrega</p>
+          <h3 class="mt-3 font-display text-3xl md:text-5xl tracking-tightest">Un programa en 8 fases</h3>
+        </div>
+        <p class="text-white/60 max-w-sm text-sm">
+          Puedes contratar desde la Fase 1 ($3K–$5K USD) — bajo riesgo, alto valor de entrada — o el programa completo.
+        </p>
+      </div>
+
+      <div class="reveal grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
+          <div class="text-xs text-accent uppercase tracking-wider">Fase 1 · puerta</div>
+          <div class="mt-2 font-medium">Diagnóstico del caos</div>
+          <div class="mt-3 text-xs text-white/50">$3K–$5K · 2–3 sem</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
+          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 2</div>
+          <div class="mt-2 font-medium">Análisis y priorización</div>
+          <div class="mt-3 text-xs text-white/40">Mapa de ROI por intervención</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
+          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 3</div>
+          <div class="mt-2 font-medium">Documentación</div>
+          <div class="mt-3 text-xs text-white/40">Captura del know-how actual</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
+          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 4</div>
+          <div class="mt-2 font-medium">Diseño de arquitectura</div>
+          <div class="mt-3 text-xs text-white/40">$5K–$10K (fases 2–4)</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
+          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 5</div>
+          <div class="mt-2 font-medium">MVP y validación</div>
+          <div class="mt-3 text-xs text-white/40">Validar antes de construir</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
+          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 6</div>
+          <div class="mt-2 font-medium">Implementación</div>
+          <div class="mt-3 text-xs text-white/40">$8K–$20K (fases 5–6)</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
+          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 7</div>
+          <div class="mt-2 font-medium">Gestión del cambio</div>
+          <div class="mt-3 text-xs text-white/40">Manuales, videos, training</div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
+          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 8</div>
+          <div class="mt-2 font-medium">Seguimiento · 7+ sem</div>
+          <div class="mt-3 text-xs text-white/40">Hasta que sea estable</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CASOS / PRUEBA SOCIAL ============== -->
+<section id="casos" class="relative py-28 md:py-40 overflow-hidden">
+  <div class="absolute inset-0 bg-grid-light opacity-70"></div>
+  <div class="relative max-w-7xl mx-auto px-6">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.22em] text-muted">04 · Impacto</p>
+      <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+        El costo del caos <span class="text-muted">no llega como factura.</span>
+      </h2>
+      <p class="mt-6 text-ink/70 text-lg max-w-2xl">
+        Se acumula en horas perdidas, reprocesos, reportes tardíos y decisiones basadas en supuestos. Así es como lo traducimos a números.
+      </p>
+    </div>
+
+    <!-- Impact grid -->
+    <div class="mt-16 grid lg:grid-cols-3 gap-5">
+      <!-- Featured case -->
+      <article class="reveal lg:col-span-2 relative bg-ink text-ivory rounded-3xl p-10 md:p-12 overflow-hidden">
+        <div class="absolute inset-0 bg-grid opacity-40"></div>
+        <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-accent/20 blur-3xl"></div>
+        <div class="relative">
+          <span class="text-xs uppercase tracking-[0.2em] text-accent">Caso destacado · operaciones</span>
+          <blockquote class="mt-8 font-display text-3xl md:text-4xl leading-tight max-w-2xl">
+            "Pasamos de cerrar el mes en 9 días a <span class="text-accent">cerrarlo en 36 horas</span>. El equipo dejó de trabajar los sábados."
+          </blockquote>
+          <div class="mt-10 flex items-center gap-4">
+            <div class="w-11 h-11 rounded-full bg-white/10 grid place-items-center font-semibold">CFO</div>
+            <div>
+              <div class="text-sm font-medium">CFO · Grupo industrial Latam</div>
+              <div class="text-xs text-white/50">180 colaboradores · 3 unidades de negocio</div>
+            </div>
+          </div>
+          <div class="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
+            <div>
+              <div class="font-display text-3xl">-81%</div>
+              <div class="text-xs text-white/60 mt-1">Errores en reportería</div>
+            </div>
+            <div>
+              <div class="font-display text-3xl">+42h</div>
+              <div class="text-xs text-white/60 mt-1">Semanales liberadas</div>
+            </div>
+            <div>
+              <div class="font-display text-3xl">3.4×</div>
+              <div class="text-xs text-white/60 mt-1">ROI a 6 meses</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Side cases -->
+      <div class="flex flex-col gap-5">
+        <article class="reveal card bg-paper border border-ink/10 rounded-3xl p-8">
+          <div class="font-display text-2xl">Retail · 12 tiendas</div>
+          <p class="mt-3 text-ink/70 text-sm leading-relaxed">
+            Centralizamos inventario, ventas y comisiones. El dueño dejó de pedir reportes por WhatsApp.
+          </p>
+          <div class="mt-6 flex items-baseline gap-2">
+            <span class="font-display text-4xl">-30h</span>
+            <span class="text-sm text-muted">/ semana en operativa manual</span>
+          </div>
+        </article>
+        <article class="reveal card bg-ink text-ivory rounded-3xl p-8">
+          <div class="font-display text-2xl">SaaS B2B · seed</div>
+          <p class="mt-3 text-white/70 text-sm leading-relaxed">
+            Gobernanza de IA y datos en 5 semanas. El equipo dejó de pegar info sensible en ChatGPT.
+          </p>
+          <div class="mt-6 flex items-baseline gap-2">
+            <span class="font-display text-4xl text-accent">100%</span>
+            <span class="text-sm text-white/60">auditable · compliance ready</span>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Quote strip -->
+    <div class="reveal mt-16 grid md:grid-cols-3 gap-6">
+      <figure class="p-6 rounded-2xl bg-paper border border-ink/10">
+        <p class="text-ink/80 leading-relaxed">"Dejaron un sistema que cualquiera del equipo puede operar. No quedamos dependiendo de nadie."</p>
+        <figcaption class="mt-4 text-xs text-muted">COO · Construcción</figcaption>
+      </figure>
+      <figure class="p-6 rounded-2xl bg-paper border border-ink/10">
+        <p class="text-ink/80 leading-relaxed">"Hablan en lenguaje de negocio. Entendí el ROI antes de ver una sola pantalla."</p>
+        <figcaption class="mt-4 text-xs text-muted">CEO · Servicios profesionales</figcaption>
+      </figure>
+      <figure class="p-6 rounded-2xl bg-paper border border-ink/10">
+        <p class="text-ink/80 leading-relaxed">"Diagnóstico brutal, honesto. Nos mostraron dolores que llevábamos dos años ignorando."</p>
+        <figcaption class="mt-4 text-xs text-muted">VP Operaciones · Fintech</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============== EQUIPO ============== -->
+<section id="equipo" class="relative bg-ink text-ivory py-28 md:py-40 overflow-hidden">
+  <div class="absolute inset-0 bg-grid opacity-40"></div>
+  <div class="relative max-w-7xl mx-auto px-6">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.22em] text-white/50">05 · Equipo</p>
+      <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+        Senior end-to-end.<br/><span class="text-white/50">Sin capas intermedias.</span>
+      </h2>
+      <p class="mt-6 text-white/70 text-lg max-w-2xl">
+        Hablamos nosotros con el C-suite. Diseñamos nosotros la arquitectura. Implementamos nosotros el sistema. No hay juniors detrás de la cortina.
+      </p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-3 gap-5">
+      <!-- Paul -->
+      <article class="reveal card border border-white/10 rounded-2xl overflow-hidden bg-white/[.02]">
+        <div class="aspect-[4/5] bg-gradient-to-br from-accent/20 via-accent/5 to-transparent relative">
+          <div class="absolute inset-0 ring-dotted opacity-60"></div>
+          <div class="absolute inset-0 grid place-items-center">
+            <span class="font-display text-8xl text-white/20">P</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-2xl">Paul Vidal</h3>
+          <p class="text-xs uppercase tracking-wider text-accent mt-1">Estrategia · Diagnóstico · Cierre</p>
+          <p class="mt-4 text-sm text-white/70 leading-relaxed">Traduce caos operativo en oportunidades de IA. Se sienta con C-suite y convierte dolor en business case.</p>
+        </div>
+      </article>
+
+      <!-- Emmanuel -->
+      <article class="reveal card border border-white/10 rounded-2xl overflow-hidden bg-white/[.02]">
+        <div class="aspect-[4/5] bg-gradient-to-br from-accent/30 via-accent/10 to-transparent relative">
+          <div class="absolute inset-0 ring-dotted opacity-60"></div>
+          <div class="absolute inset-0 grid place-items-center">
+            <span class="font-display text-8xl text-white/20">E</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-2xl">Emmanuel Cervera</h3>
+          <p class="text-xs uppercase tracking-wider text-accent mt-1">Arquitectura · Implementación</p>
+          <p class="mt-4 text-sm text-white/70 leading-relaxed">Diseña las 5 capas y construye el sistema. Más de una década llevando producto end-to-end a producción.</p>
+        </div>
+      </article>
+
+      <!-- Fernanda -->
+      <article class="reveal card border border-white/10 rounded-2xl overflow-hidden bg-white/[.02]">
+        <div class="aspect-[4/5] bg-gradient-to-br from-accent/25 via-accent/5 to-transparent relative">
+          <div class="absolute inset-0 ring-dotted opacity-60"></div>
+          <div class="absolute inset-0 grid place-items-center">
+            <span class="font-display text-8xl text-white/20">F</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display text-2xl">Fernanda Campos</h3>
+          <p class="text-xs uppercase tracking-wider text-accent mt-1">Desarrollo de negocio</p>
+          <p class="mt-4 text-sm text-white/70 leading-relaxed">Abre puertas con C-suite vía LinkedIn orgánico y red directa. Filtra calidad antes de cualquier llamada.</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- Flow line -->
+    <div class="reveal mt-14 p-6 md:p-8 rounded-2xl border border-white/10 bg-white/[.02] flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-3 text-sm text-white/70">
+        <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">Fernanda abre la puerta</span>
+        <svg width="18" height="12" viewBox="0 0 24 12" fill="none" class="text-white/30"><path d="M1 6h22M18 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">Paul diagnostica y cierra</span>
+        <svg width="18" height="12" viewBox="0 0 24 12" fill="none" class="text-white/30"><path d="M1 6h22M18 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="px-3 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent">Emmanuel diseña e implementa</span>
+      </div>
+      <span class="text-xs uppercase tracking-wider text-white/40">Un flujo. Una cabeza.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FAQs ============== -->
+<section id="faqs" class="relative py-28 md:py-40">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.22em] text-muted">06 · Dudas frecuentes</p>
+      <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+        Lo que preguntan <span class="text-muted">antes de agendar.</span>
+      </h2>
+    </div>
+
+    <div class="reveal mt-14 divide-y divide-ink/10 border-t border-b border-ink/10">
+      <details class="group py-6">
+        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿En qué se diferencian de una agencia de automatizaciones?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">No vendemos agentes, chatbots ni workflows sueltos. Diseñamos arquitecturas completas de IA en 5 capas que resuelven el problema estructural, no el síntoma. El entregable es un sistema que funciona sin nosotros.</p>
+      </details>
+      <details class="group py-6">
+        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Cuánto cuesta un programa completo?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Empiezas con el Diagnóstico ($3K–$5K USD, 2–3 semanas). Si seguimos, el diseño de arquitectura va de $5K–$10K y la implementación entre $8K–$20K según alcance. Todo desglosado en el business case, sin letra chica.</p>
+      </details>
+      <details class="group py-6">
+        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Qué pasa si ya tenemos un ERP/CRM?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Mejor. La mayoría de nuestros clientes ya tienen herramientas — el problema es que están desconectadas y mal usadas. Conectamos lo que ya tienes antes de proponer nada nuevo.</p>
+      </details>
+      <details class="group py-6">
+        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Trabajan fuera de Perú?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Foco inicial en Perú. Atendemos proyectos regionales (Latam) por referido y procesos 100% remotos. Hablamos español, inglés técnico y el lenguaje del C-suite.</p>
+      </details>
+      <details class="group py-6">
+        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Qué pasa después de la implementación?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Fases 7 y 8: entrenamiento, documentación completa y 7+ semanas de seguimiento hasta que el sistema sea estable. El objetivo es independencia real — tu equipo opera sin el consultor.</p>
+      </details>
+      <details class="group py-6">
+        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Qué NO hacen?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Automatizaciones sueltas sin diagnóstico. Chatbots cosméticos. Proyectos sin business case. Soporte 24/7. Branding o diseño gráfico. Si no podemos generar impacto medible, te lo decimos antes de cobrarte.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CTA FINAL + FORM ============== -->
+<section id="contacto" class="relative bg-ink text-ivory overflow-hidden">
+  <div class="absolute inset-0 bg-grid opacity-30"></div>
+  <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full bg-accent/10 blur-3xl"></div>
+
+  <div class="relative max-w-6xl mx-auto px-6 py-28 md:py-40">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-5 reveal">
+        <p class="text-xs uppercase tracking-[0.22em] text-white/50">07 · Empezar</p>
+        <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+          Empieza por el diagnóstico. <span class="text-accent">2 semanas.</span>
+        </h2>
+        <p class="mt-6 text-white/70 leading-relaxed max-w-md">
+          En 2 sesiones entendemos el caos operativo, cuantificamos el costo real y te entregamos un mapa de prioridades con ROI. Sin compromisos de continuidad.
+        </p>
+
+        <ul class="mt-10 space-y-4">
+          <li class="flex items-start gap-3">
+            <span class="mt-1 w-5 h-5 rounded-full bg-accent/20 text-accent grid place-items-center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="text-white/85">Reuniones con decisores + operativos clave</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mt-1 w-5 h-5 rounded-full bg-accent/20 text-accent grid place-items-center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="text-white/85">Auditoría completa: procesos, datos, herramientas</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mt-1 w-5 h-5 rounded-full bg-accent/20 text-accent grid place-items-center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="text-white/85">Mapa priorizado con ROI estimado por intervención</span>
+          </li>
+        </ul>
+
+        <div class="mt-12 pt-8 border-t border-white/10 flex items-center gap-6 text-sm text-white/60">
+          <div>
+            <div class="text-white/40 text-xs uppercase tracking-wider">Escríbenos</div>
+            <a href="mailto:hola@coerence.tech" class="mt-1 block text-white hover:text-accent">hola@coerence.tech</a>
+          </div>
+          <div class="h-8 w-px bg-white/10"></div>
+          <div>
+            <div class="text-white/40 text-xs uppercase tracking-wider">Base</div>
+            <div class="mt-1 text-white">Lima, Perú · Remoto Latam</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="lg:col-span-7 reveal">
+        <form id="contactForm" class="relative bg-white/[.03] backdrop-blur border border-white/10 rounded-3xl p-6 md:p-10" novalidate>
+          <div class="grid md:grid-cols-2 gap-5">
+            <div>
+              <label for="nombre" class="text-xs uppercase tracking-wider text-white/60">Nombre</label>
+              <input id="nombre" name="nombre" type="text" required
+                class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30" placeholder="Tu nombre" />
+              <p class="err text-xs text-red-400 mt-1 hidden">Ingresa tu nombre.</p>
+            </div>
+            <div>
+              <label for="empresa" class="text-xs uppercase tracking-wider text-white/60">Empresa</label>
+              <input id="empresa" name="empresa" type="text" required
+                class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30" placeholder="Razón social o marca" />
+              <p class="err text-xs text-red-400 mt-1 hidden">Ingresa tu empresa.</p>
+            </div>
+            <div>
+              <label for="rol" class="text-xs uppercase tracking-wider text-white/60">Rol</label>
+              <select id="rol" name="rol" required
+                class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white">
+                <option value="" class="bg-ink">Selecciona tu rol</option>
+                <option class="bg-ink">CEO / Owner</option>
+                <option class="bg-ink">COO / Operaciones</option>
+                <option class="bg-ink">CFO / Finanzas</option>
+                <option class="bg-ink">CTO / Tecnología</option>
+                <option class="bg-ink">Otro</option>
+              </select>
+              <p class="err text-xs text-red-400 mt-1 hidden">Selecciona un rol.</p>
+            </div>
+            <div>
+              <label for="email" class="text-xs uppercase tracking-wider text-white/60">Email corporativo</label>
+              <input id="email" name="email" type="email" required
+                class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30" placeholder="tu@empresa.com" />
+              <p class="err text-xs text-red-400 mt-1 hidden">Ingresa un email válido.</p>
+            </div>
+            <div class="md:col-span-2">
+              <label for="mensaje" class="text-xs uppercase tracking-wider text-white/60">Cuéntanos el caos que quieres resolver</label>
+              <textarea id="mensaje" name="mensaje" rows="4" required
+                class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30 resize-none"
+                placeholder="Dónde pierdes tiempo, qué áreas no se hablan, qué métrica necesitas ver en tiempo real…"></textarea>
+              <p class="err text-xs text-red-400 mt-1 hidden">Cuéntanos un poco más.</p>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <p class="text-xs text-white/50 max-w-sm">Respondemos en menos de 24h hábiles. Solo agendamos si vemos fit real — no hacemos reuniones de relleno.</p>
+            <button type="submit" class="btn-primary inline-flex items-center justify-center gap-2 bg-accent text-ink font-semibold px-6 py-3.5 rounded-full text-sm w-full sm:w-auto">
+              <span>Agendar diagnóstico</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+
+          <!-- success state -->
+          <div id="formSuccess" class="hidden mt-6 p-5 rounded-xl border border-accent/30 bg-accent/10 text-accent">
+            ✓ Recibimos tu mensaje. Te escribimos en menos de 24h hábiles.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="bg-ink text-white/60 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-3 gap-8">
+    <div>
+      <div class="flex items-center gap-2">
+        <img src="coerens_icon.svg" alt="" class="h-7 w-auto" style="filter: brightness(0) invert(1);" />
+        <span class="font-display text-white text-lg">coherence<span class="text-accent">Lab</span></span>
+      </div>
+      <p class="mt-4 text-sm max-w-sm">Arquitectura de IA para operaciones. No vendemos automatizaciones, vendemos sistemas.</p>
+    </div>
+    <div class="flex flex-col gap-2 text-sm">
+      <span class="text-white/40 uppercase text-xs tracking-wider mb-1">Navegación</span>
+      <a href="#beneficios" class="hover:text-white">Sistema</a>
+      <a href="#metodologia" class="hover:text-white">Metodología</a>
+      <a href="#equipo" class="hover:text-white">Equipo</a>
+      <a href="#contacto" class="hover:text-white">Contacto</a>
+    </div>
+    <div class="flex flex-col gap-2 text-sm">
+      <span class="text-white/40 uppercase text-xs tracking-wider mb-1">Contacto</span>
+      <a href="mailto:hola@coerence.tech" class="hover:text-white">hola@coerence.tech</a>
+      <span>Lima, Perú</span>
+      <span>coerence.tech</span>
+    </div>
+  </div>
+  <div class="border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between text-xs text-white/40 gap-3">
+      <span>© <span id="year"></span> coherenceLab. Todos los derechos reservados.</span>
+      <span>"No compito por precio, compito por criterio."</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Form validation
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let valid = true;
+    form.querySelectorAll('.err').forEach(el => el.classList.add('hidden'));
+
+    const fields = [
+      { id: 'nombre',  test: v => v.trim().length >= 2 },
+      { id: 'empresa', test: v => v.trim().length >= 2 },
+      { id: 'rol',     test: v => v.trim().length > 0 },
+      { id: 'email',   test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
+      { id: 'mensaje', test: v => v.trim().length >= 10 },
+    ];
+    fields.forEach(f => {
+      const el = document.getElementById(f.id);
+      if (!f.test(el.value)) {
+        valid = false;
+        el.parentElement.querySelector('.err').classList.remove('hidden');
+        el.classList.add('border-red-400');
+      } else {
+        el.classList.remove('border-red-400');
+      }
+    });
+
+    if (valid) {
+      document.getElementById('formSuccess').classList.remove('hidden');
+      form.reset();
+      setTimeout(() => document.getElementById('formSuccess').classList.add('hidden'), 6000);
+    }
+  });
+</script>
+</body>
+</html>
