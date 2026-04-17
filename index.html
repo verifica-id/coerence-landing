@@ -4,17 +4,18 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>coherenceLab — Arquitectura de IA para operaciones que escalan sin caos</title>
-<meta name="description" content="Diseñamos e implementamos sistemas de arquitectura de IA que optimizan operaciones, reducen costos invisibles y dan control total al decisor con datos en tiempo real. No vendemos automatizaciones sueltas: vendemos sistemas." />
+<title>coherenceLab — MVPs con criterio en 90 días</title>
+<meta name="description" content="Construimos MVPs mínimos y simples que validan tu hipótesis en 90 días. El mismo método con el que levantamos VerificaID. Sin software factories, sin prototipos frágiles, sin balas al aire." />
 <meta name="theme-color" content="#0A0E1A" />
 <link rel="icon" type="image/svg+xml" href="coerens_icon.svg" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="coherenceLab — Arquitectura de IA para operaciones que escalan sin caos" />
-<meta property="og:description" content="Sistemas completos de IA que integran procesos automatizados, datos conectados y dashboards en tiempo real. Competimos por criterio, no por precio." />
+<meta property="og:title" content="coherenceLab — MVPs con criterio en 90 días" />
+<meta property="og:description" content="MVPs mínimos que validan tu hipótesis en 90 días. Mismo método con el que levantamos VerificaID. Competimos por criterio, no por precio." />
 <meta property="og:url" content="https://coerence.tech" />
 <meta property="og:site_name" content="coherenceLab" />
+<meta property="og:locale" content="es_PE" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -115,10 +116,25 @@ tailwind.config = {
   .marquee { mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
   @keyframes scroll-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   .marquee-track { animation: scroll-x 40s linear infinite; }
+  .marquee-track-slow { animation: scroll-x 60s linear infinite; }
 
   /* FAQ */
   details[open] .faq-icon { transform: rotate(45deg); }
   .faq-icon { transition: transform .25s ease; }
+
+  /* Planet animation */
+  @keyframes spin-cw  { to { transform: rotate(360deg); } }
+  @keyframes spin-ccw { to { transform: rotate(-360deg); } }
+  @keyframes float-y  { 0%,100% { transform: translateY(-6px); } 50% { transform: translateY(6px); } }
+  .planet-svg { animation: float-y 9s ease-in-out infinite; }
+  .planet-rotate       { animation: spin-cw  60s linear infinite; transform-box: fill-box; }
+  .orbit-1             { animation: spin-cw  22s linear infinite; transform-box: fill-box; transform-origin: 200px 200px; }
+  .orbit-spin-reverse  { animation: spin-ccw 28s linear infinite; transform-box: fill-box; }
+  .orbit-spin-slow     { animation: spin-cw  40s linear infinite; transform-box: fill-box; }
+  @media (prefers-reduced-motion: reduce) {
+    .planet-svg, .planet-rotate, .orbit-1, .orbit-spin-reverse, .orbit-spin-slow,
+    .marquee-track, .marquee-track-slow { animation: none; }
+  }
 </style>
 </head>
 
@@ -131,16 +147,17 @@ tailwind.config = {
       <img src="coerens_logo.svg" alt="coherenceLab" class="h-7 w-auto" />
     </a>
     <div class="hidden md:flex items-center gap-8 text-sm text-ink/70">
-      <a class="nav-link" href="#beneficios">Sistema</a>
+      <a class="nav-link" href="#sistema">Sistema</a>
       <a class="nav-link" href="#metodologia">Metodología</a>
+      <a class="nav-link" href="#caso">Caso</a>
       <a class="nav-link" href="#equipo">Equipo</a>
       <a class="nav-link" href="#faqs">FAQs</a>
     </div>
     <a href="#contacto" class="btn-primary hidden md:inline-flex items-center gap-2 bg-ink text-ivory text-sm font-medium px-4 py-2 rounded-full">
-      Agendar diagnóstico
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Agenda tu Discovery
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <a href="#contacto" class="md:hidden text-sm font-medium text-ink underline decoration-accent underline-offset-4">Contactar</a>
+    <a href="#contacto" class="md:hidden text-sm font-medium text-ink underline decoration-accent underline-offset-4">Discovery</a>
   </nav>
 </header>
 
@@ -150,54 +167,139 @@ tailwind.config = {
   <div class="absolute inset-0 radial-fade"></div>
 
   <div class="relative max-w-7xl mx-auto px-6 pt-40 pb-28 md:pt-52 md:pb-40">
-    <div class="reveal max-w-4xl">
-      <div class="inline-flex items-center gap-2 border border-white/15 bg-white/[.03] backdrop-blur px-3 py-1.5 rounded-full text-xs text-white/80">
-        <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
-        Arquitectura de IA · no automatizaciones sueltas
+    <div class="reveal grid lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7">
+        <div class="inline-flex items-center gap-2 border border-white/15 bg-white/[.03] backdrop-blur px-3 py-1.5 rounded-full text-xs text-white/80">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+          MVPs con criterio · mismo método con el que levantamos VerificaID
+        </div>
+
+        <h1 class="font-display mt-8 text-[44px] leading-[1.03] md:text-[76px] md:leading-[.98] tracking-tightest grad-text">
+          Tu MVP en producción en 90 días.<br class="hidden md:block"/> Con criterio. Sin balas al aire.
+        </h1>
+
+        <p class="mt-8 max-w-2xl text-lg md:text-xl text-white/70 leading-relaxed">
+          Antes de escribir una línea de código, sabemos exactamente <span class="text-white font-medium">qué hipótesis vas a validar</span>, qué métricas vas a mirar y cuál es el MVP mínimo para responderlo. Lo construimos los mismos fundadores que levantamos VerificaID con este método.
+        </p>
+
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <a href="#contacto" class="btn-primary inline-flex items-center gap-2 bg-accent text-ink font-semibold px-6 py-3.5 rounded-full text-sm">
+            Agenda tu Discovery
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#metodologia" class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white group">
+            <span class="w-8 h-8 grid place-items-center rounded-full border border-white/20 group-hover:border-white">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            Ver metodología completa
+          </a>
+        </div>
       </div>
 
-      <h1 class="font-display mt-8 text-[44px] leading-[1.03] md:text-[76px] md:leading-[.98] tracking-tightest grad-text">
-        Operaciones que escalan sin caos,<br class="hidden md:block"/> con datos en tiempo real.
-      </h1>
+      <!-- Planet / data interconnectivity animation -->
+      <div class="lg:col-span-5 relative flex items-center justify-center">
+        <div class="absolute inset-0 bg-accent/15 blur-3xl rounded-full"></div>
+        <svg class="planet-svg relative w-full max-w-[460px] aspect-square" viewBox="0 0 400 400" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="planetGrad" cx="40%" cy="35%" r="75%">
+              <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.9"/>
+              <stop offset="55%" stop-color="#815BD4" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#0A0E1A" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="arcGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#815BD4" stop-opacity="0"/>
+              <stop offset="50%" stop-color="#A78BFA" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#815BD4" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
 
-      <p class="mt-8 max-w-2xl text-lg md:text-xl text-white/70 leading-relaxed">
-        Diseñamos e implementamos <span class="text-white font-medium">sistemas completos de IA</span> que integran procesos automatizados, datos conectados y dashboards gerenciales. El decisor recupera el control. El equipo deja de apagar incendios.
-      </p>
+          <circle cx="200" cy="200" r="188" stroke="#815BD4" stroke-opacity="0.25" stroke-width="1" stroke-dasharray="2 6"/>
+          <circle cx="200" cy="200" r="120" fill="url(#planetGrad)"/>
+          <circle cx="200" cy="200" r="96" fill="#0A0E1A" stroke="#815BD4" stroke-opacity="0.55" stroke-width="1.2"/>
 
-      <div class="mt-10 flex flex-wrap items-center gap-4">
-        <a href="#contacto" class="btn-primary inline-flex items-center gap-2 bg-accent text-ink font-semibold px-6 py-3.5 rounded-full text-sm">
-          Agenda un diagnóstico
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="#metodologia" class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white">
-          <span class="w-8 h-8 grid place-items-center rounded-full border border-white/20 group-hover:border-white">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          Ver metodología completa
-        </a>
+          <g class="planet-rotate" style="transform-origin:200px 200px">
+            <ellipse cx="200" cy="200" rx="96" ry="30" stroke="#A78BFA" stroke-opacity="0.35" stroke-width="1"/>
+            <ellipse cx="200" cy="200" rx="96" ry="60" stroke="#A78BFA" stroke-opacity="0.22" stroke-width="1"/>
+            <ellipse cx="200" cy="200" rx="30" ry="96" stroke="#A78BFA" stroke-opacity="0.22" stroke-width="1"/>
+            <ellipse cx="200" cy="200" rx="60" ry="96" stroke="#A78BFA" stroke-opacity="0.18" stroke-width="1"/>
+            <line x1="104" y1="200" x2="296" y2="200" stroke="#A78BFA" stroke-opacity="0.35" stroke-width="1"/>
+          </g>
+
+          <g class="orbit orbit-1" style="transform-origin:200px 200px">
+            <ellipse cx="200" cy="200" rx="150" ry="52" stroke="#815BD4" stroke-opacity="0.45" stroke-width="1.2"/>
+            <circle cx="350" cy="200" r="5" fill="#A78BFA" filter="url(#nodeGlow)"/>
+          </g>
+          <g class="orbit orbit-2" style="transform:rotate(55deg);transform-origin:200px 200px">
+            <g style="transform-origin:200px 200px" class="orbit-spin-reverse">
+              <ellipse cx="200" cy="200" rx="165" ry="48" stroke="#A78BFA" stroke-opacity="0.35" stroke-width="1"/>
+              <circle cx="35" cy="200" r="4" fill="#815BD4" filter="url(#nodeGlow)"/>
+              <circle cx="365" cy="200" r="3" fill="#A78BFA" filter="url(#nodeGlow)"/>
+            </g>
+          </g>
+          <g class="orbit orbit-3" style="transform:rotate(-30deg);transform-origin:200px 200px">
+            <g style="transform-origin:200px 200px" class="orbit-spin-slow">
+              <ellipse cx="200" cy="200" rx="135" ry="135" stroke="#815BD4" stroke-opacity="0.18" stroke-width="1" stroke-dasharray="3 6"/>
+              <circle cx="200" cy="65" r="4" fill="#A78BFA" filter="url(#nodeGlow)"/>
+              <circle cx="200" cy="335" r="3.5" fill="#815BD4" filter="url(#nodeGlow)"/>
+            </g>
+          </g>
+
+          <g>
+            <circle cx="80"  cy="120" r="3" fill="#A78BFA"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.8s" repeatCount="indefinite"/></circle>
+            <circle cx="320" cy="110" r="3" fill="#A78BFA"><animate attributeName="opacity" values="1;0.3;1" dur="3.2s" repeatCount="indefinite"/></circle>
+            <circle cx="340" cy="290" r="3" fill="#815BD4"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/></circle>
+            <circle cx="70"  cy="280" r="3" fill="#815BD4"><animate attributeName="opacity" values="1;0.3;1" dur="3.6s" repeatCount="indefinite"/></circle>
+            <circle cx="200" cy="40"  r="2.5" fill="#A78BFA"><animate attributeName="opacity" values="0.5;1;0.5" dur="2.2s" repeatCount="indefinite"/></circle>
+            <circle cx="200" cy="360" r="2.5" fill="#A78BFA"><animate attributeName="opacity" values="1;0.4;1" dur="3s"   repeatCount="indefinite"/></circle>
+          </g>
+
+          <g stroke="url(#arcGrad)" stroke-width="1" fill="none">
+            <path d="M80,120 Q200,20 320,110"><animate attributeName="stroke-dasharray" values="0 400;200 400;400 0" dur="4s" repeatCount="indefinite"/></path>
+            <path d="M320,110 Q400,200 340,290"><animate attributeName="stroke-dasharray" values="0 400;200 400;400 0" dur="4.8s" repeatCount="indefinite"/></path>
+            <path d="M340,290 Q200,380 70,280"><animate attributeName="stroke-dasharray" values="0 400;200 400;400 0" dur="5.4s" repeatCount="indefinite"/></path>
+            <path d="M70,280 Q20,200 80,120"><animate attributeName="stroke-dasharray" values="0 400;200 400;400 0" dur="4.4s" repeatCount="indefinite"/></path>
+            <path d="M80,120 L340,290" stroke-opacity="0.35"><animate attributeName="stroke-dasharray" values="0 500;250 500;500 0" dur="6s" repeatCount="indefinite"/></path>
+            <path d="M320,110 L70,280" stroke-opacity="0.3"><animate attributeName="stroke-dasharray" values="0 500;250 500;500 0" dur="6.6s" repeatCount="indefinite"/></path>
+          </g>
+
+          <circle cx="200" cy="200" r="6" fill="#A78BFA">
+            <animate attributeName="r" values="5;9;5" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="1;0.6;1" dur="2.2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="200" cy="200" r="14" fill="none" stroke="#A78BFA" stroke-opacity="0.6">
+            <animate attributeName="r" values="8;40;8" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0;0.7" dur="3s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
       </div>
+    </div>
 
-      <!-- Stat strip -->
-      <dl class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl">
+    <!-- Stat strip -->
+    <div class="reveal mt-20">
+      <dl class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl">
         <div>
-          <dt class="text-xs uppercase tracking-wider text-white/50">Horas perdidas</dt>
-          <dd class="mt-1 text-2xl font-display font-semibold">~4h / día</dd>
-          <p class="text-xs text-white/50">en operativa manual típica</p>
+          <dt class="text-xs uppercase tracking-wider text-white/50">Al MVP</dt>
+          <dd class="mt-1 text-2xl font-display font-semibold">90 días</dd>
+          <p class="text-xs text-white/50">en producción, no demo</p>
         </div>
         <div>
-          <dt class="text-xs uppercase tracking-wider text-white/50">Costo del caos</dt>
-          <dd class="mt-1 text-2xl font-display font-semibold">$30K–$100K</dd>
-          <p class="text-xs text-white/50">USD / mes en medianas</p>
+          <dt class="text-xs uppercase tracking-wider text-white/50">Paquete completo</dt>
+          <dd class="mt-1 text-2xl font-display font-semibold">$25K–$40K</dd>
+          <p class="text-xs text-white/50">USD · cero letra chica</p>
         </div>
         <div>
-          <dt class="text-xs uppercase tracking-wider text-white/50">Framework</dt>
-          <dd class="mt-1 text-2xl font-display font-semibold">5 capas</dd>
-          <p class="text-xs text-white/50">backend → gobernanza</p>
+          <dt class="text-xs uppercase tracking-wider text-white/50">Discovery inicial</dt>
+          <dd class="mt-1 text-2xl font-display font-semibold">2 semanas</dd>
+          <p class="text-xs text-white/50">go/no-go honesto</p>
         </div>
         <div>
-          <dt class="text-xs uppercase tracking-wider text-white/50">Entrega</dt>
-          <dd class="mt-1 text-2xl font-display font-semibold">8 fases</dd>
-          <p class="text-xs text-white/50">diagnóstico → optimización</p>
+          <dt class="text-xs uppercase tracking-wider text-white/50">IP del producto</dt>
+          <dd class="mt-1 text-2xl font-display font-semibold">100% tuya</dd>
+          <p class="text-xs text-white/50">transferida al cierre</p>
         </div>
       </dl>
     </div>
@@ -208,39 +310,39 @@ tailwind.config = {
       <div class="relative border border-white/10 rounded-2xl bg-gradient-to-b from-white/[.05] to-white/[.02] backdrop-blur p-6 md:p-8">
         <div class="flex items-center justify-between text-xs text-white/50 mb-6">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-accent"></span>
-            control operativo · live
+            <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+            MVP control · live
           </div>
-          <span>coherence.ops / panel</span>
+          <span>coherence.mvp / panel</span>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div class="p-4 rounded-xl bg-white/[.03] border border-white/5">
-            <div class="text-[11px] text-white/50 uppercase tracking-wider">Procesos automatizados</div>
-            <div class="mt-2 flex items-end gap-1"><span class="text-2xl font-semibold">87%</span><span class="text-accent text-xs mb-1">+12</span></div>
+            <div class="text-[11px] text-white/50 uppercase tracking-wider">Sprint completion</div>
+            <div class="mt-2 flex items-end gap-1"><span class="text-2xl font-semibold">87%</span><span class="text-accent text-xs mb-1">semanal</span></div>
             <div class="mt-3 h-1.5 rounded-full bg-white/10"><div class="h-full w-[87%] rounded-full bg-accent"></div></div>
           </div>
           <div class="p-4 rounded-xl bg-white/[.03] border border-white/5">
-            <div class="text-[11px] text-white/50 uppercase tracking-wider">Horas-hombre/sem</div>
-            <div class="mt-2 text-2xl font-semibold">-42h</div>
-            <svg class="mt-2" viewBox="0 0 120 28" width="100%" height="28"><polyline fill="none" stroke="#815BD4" stroke-width="2" points="0,22 15,20 30,24 45,16 60,14 75,9 90,11 105,6 120,4"/></svg>
+            <div class="text-[11px] text-white/50 uppercase tracking-wider">Tiempo al MVP</div>
+            <div class="mt-2 text-2xl font-semibold">90 días</div>
+            <svg class="mt-2" viewBox="0 0 120 28" width="100%" height="28" aria-hidden="true"><polyline fill="none" stroke="#815BD4" stroke-width="2" points="0,22 15,20 30,18 45,16 60,13 75,10 90,8 105,5 120,3"/></svg>
           </div>
           <div class="p-4 rounded-xl bg-white/[.03] border border-white/5">
-            <div class="text-[11px] text-white/50 uppercase tracking-wider">Errores manuales</div>
-            <div class="mt-2 text-2xl font-semibold">-81%</div>
+            <div class="text-[11px] text-white/50 uppercase tracking-wider">Onboarding</div>
+            <div class="mt-2 text-2xl font-semibold">3d → 1h</div>
             <div class="mt-3 flex gap-0.5">
+              <span class="h-5 w-1 rounded-sm bg-accent"></span>
               <span class="h-4 w-1 rounded-sm bg-accent/80"></span>
               <span class="h-3 w-1 rounded-sm bg-accent/60"></span>
-              <span class="h-5 w-1 rounded-sm bg-accent"></span>
-              <span class="h-2 w-1 rounded-sm bg-accent/40"></span>
-              <span class="h-4 w-1 rounded-sm bg-accent/70"></span>
-              <span class="h-6 w-1 rounded-sm bg-accent"></span>
               <span class="h-3 w-1 rounded-sm bg-accent/50"></span>
+              <span class="h-2 w-1 rounded-sm bg-accent/40"></span>
+              <span class="h-2 w-1 rounded-sm bg-accent/30"></span>
+              <span class="h-1 w-1 rounded-sm bg-accent/20"></span>
             </div>
           </div>
           <div class="p-4 rounded-xl bg-white/[.03] border border-white/5">
-            <div class="text-[11px] text-white/50 uppercase tracking-wider">ROI acumulado</div>
-            <div class="mt-2 text-2xl font-semibold">3.4×</div>
-            <div class="mt-2 text-[11px] text-white/50">a 6 meses post-go-live</div>
+            <div class="text-[11px] text-white/50 uppercase tracking-wider">IP transferida</div>
+            <div class="mt-2 flex items-end gap-1"><span class="text-2xl font-semibold">100%</span><span class="text-accent text-xs mb-1">al cierre</span></div>
+            <div class="mt-2 text-[11px] text-white/50">código · datos · diseño · docs</div>
           </div>
         </div>
         <div class="mt-6 ring-dotted h-14 rounded-xl border border-white/5"></div>
@@ -252,394 +354,685 @@ tailwind.config = {
   <div class="relative border-t border-white/5 py-6">
     <div class="marquee overflow-hidden">
       <div class="marquee-track flex gap-14 whitespace-nowrap text-xs uppercase tracking-[0.2em] text-white/40">
-        <span>↳ diagnóstico operativo</span><span>· framework 5 capas</span><span>· datos conectados</span><span>· gobernanza de IA</span><span>· dashboards gerenciales</span><span>· gestión del cambio</span>
-        <span>↳ diagnóstico operativo</span><span>· framework 5 capas</span><span>· datos conectados</span><span>· gobernanza de IA</span><span>· dashboards gerenciales</span><span>· gestión del cambio</span>
+        <span>↳ discovery del MVP</span><span>· blueprint + prototipo</span><span>· MVP en producción</span><span>· dashboards en vivo</span><span>· IP 100% tuya</span><span>· equipo entrenado</span>
+        <span>↳ discovery del MVP</span><span>· blueprint + prototipo</span><span>· MVP en producción</span><span>· dashboards en vivo</span><span>· IP 100% tuya</span><span>· equipo entrenado</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============== BENEFICIOS (3 pilares) ============== -->
-<section id="beneficios" class="relative py-28 md:py-40">
-  <div class="max-w-7xl mx-auto px-6">
+<!-- ============== S2 · EL PROBLEMA ============== -->
+<section id="problema" class="relative py-28 md:py-40 overflow-hidden">
+  <div class="absolute inset-0 bg-grid-light opacity-40"></div>
+  <div class="relative max-w-7xl mx-auto px-6">
     <div class="reveal max-w-3xl">
-      <p class="text-xs uppercase tracking-[0.22em] text-muted">02 · El sistema</p>
+      <p class="text-xs uppercase tracking-[0.22em] text-muted">02 · El problema</p>
       <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
-        Tres pilares inseparables. <span class="text-muted">Vender uno sin los otros es incompleto.</span>
+        Tres caminos que ya te quemaron <span class="text-muted">antes de llegar a nosotros.</span>
       </h2>
-      <p class="mt-6 text-lg text-ink/70 max-w-2xl">
-        Los dashboards solos son "Power BI bonito con data inútil". Los procesos sin datos son automatizaciones sueltas. La arquitectura real conecta los tres.
+      <p class="mt-6 text-ink/70 text-lg max-w-2xl">
+        Si estás leyendo esto, probablemente ya probaste uno. Quizás los tres. Por eso buscas algo distinto.
+      </p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-3 gap-5">
+      <!-- Camino 1: software factory -->
+      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
+        <div class="flex items-center gap-3">
+          <span class="font-display text-4xl text-ink/30">01</span>
+          <span class="text-[11px] uppercase tracking-wider text-muted">El costoso</span>
+        </div>
+        <h3 class="mt-5 font-display text-2xl leading-tight">La software factory</h3>
+        <p class="mt-4 text-ink/70 leading-relaxed">Te cotizó "el MVP que escala desde día 1". <span class="text-ink font-medium">6 meses, 3× tu presupuesto</span>, y un producto que nadie usó porque nunca validaron la hipótesis.</p>
+        <p class="mt-5 text-sm text-ink/50 italic">"Construir grande antes de validar es el error más caro."</p>
+      </article>
+
+      <!-- Camino 2: freelancer -->
+      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
+        <div class="flex items-center gap-3">
+          <span class="font-display text-4xl text-ink/30">02</span>
+          <span class="text-[11px] uppercase tracking-wider text-muted">El frágil</span>
+        </div>
+        <h3 class="mt-5 font-display text-2xl leading-tight">El freelancer</h3>
+        <p class="mt-4 text-ink/70 leading-relaxed">Te entregó <span class="text-ink font-medium">un prototipo que se cae con 20 usuarios</span>. No pensado para medir, no pensado para escalar, imposible de auditar.</p>
+        <p class="mt-5 text-sm text-ink/50 italic">"Lo barato termina costándote el pivot que no pudiste hacer."</p>
+      </article>
+
+      <!-- Camino 3: equipo interno -->
+      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
+        <div class="flex items-center gap-3">
+          <span class="font-display text-4xl text-ink/30">03</span>
+          <span class="text-[11px] uppercase tracking-wider text-muted">El saturado</span>
+        </div>
+        <h3 class="mt-5 font-display text-2xl leading-tight">El equipo interno</h3>
+        <p class="mt-4 text-ink/70 leading-relaxed">Tu equipo está con la operación, no con el producto nuevo. <span class="text-ink font-medium">La ventana de mercado se cierra</span> mientras peleas por prioridades internas.</p>
+        <p class="mt-5 text-sm text-ink/50 italic">"El tiempo que no ejecutas, lo ejecuta tu competencia."</p>
+      </article>
+    </div>
+
+    <!-- Solución -->
+    <div class="reveal mt-16 relative rounded-3xl bg-ink text-ivory p-10 md:p-14 overflow-hidden">
+      <div class="absolute inset-0 bg-grid opacity-40"></div>
+      <div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-accent/20 blur-3xl"></div>
+      <div class="relative grid md:grid-cols-12 gap-8 items-end">
+        <div class="md:col-span-8">
+          <p class="text-xs uppercase tracking-[0.22em] text-accent">Nosotros hacemos algo distinto</p>
+          <p class="mt-5 font-display text-3xl md:text-4xl leading-[1.1]">
+            Construimos el <span class="text-accent">MVP mínimo y simple</span> que tu hipótesis necesita. Con dashboards definidos antes de programar, tu equipo entrenado para operarlo solo y la IP del producto 100% transferida al cierre.
+          </p>
+        </div>
+        <div class="md:col-span-4">
+          <a href="#metodologia" class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-accent">
+            Ver los 3 momentos
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== S3 · 3 PILARES ============== -->
+<section id="sistema" class="relative bg-ink text-ivory py-28 md:py-40 overflow-hidden">
+  <div class="absolute inset-0 bg-grid opacity-40"></div>
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"></div>
+  <div class="relative max-w-7xl mx-auto px-6">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.22em] text-white/50">03 · Qué construimos</p>
+      <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+        Tres pilares inseparables. <span class="text-white/50">Los tres o ninguno.</span>
+      </h2>
+      <p class="mt-6 text-white/70 text-lg max-w-2xl">
+        Todo MVP de coherenceLab se sostiene en lo mismo — definido en el Discovery, no al final: procesos automatizados en lo esencial, datos capturados con criterio y dashboards con las métricas que importan.
       </p>
     </div>
 
     <div class="mt-16 grid md:grid-cols-3 gap-5">
       <!-- Pilar 1 -->
-      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
-        <div class="w-12 h-12 rounded-xl grid place-items-center bg-ink text-ivory mb-6">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h10M4 12h16M4 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <article class="reveal card bg-white/[.02] border border-white/10 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-xl grid place-items-center bg-accent/15 text-accent mb-6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h10M4 12h16M4 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
-        <h3 class="font-display text-2xl leading-tight">Procesos 100% automatizados</h3>
-        <p class="mt-4 text-ink/70 leading-relaxed">Eliminamos cuellos de botella, reprocesos y errores manuales. Tu equipo deja de perder horas en tareas que ningún humano debería hacer.</p>
-        <ul class="mt-6 space-y-2 text-sm text-ink/70">
-          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Ciclos de mejora continua</li>
-          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Orquestación entre áreas</li>
-          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>SLAs medibles</li>
+        <h3 class="font-display text-2xl leading-tight">Procesos automatizados en lo esencial</h3>
+        <p class="mt-4 text-white/70 leading-relaxed">Lo mínimo para que el MVP opere sin el fundador apagando incendios. <span class="text-white font-medium">Ni una automatización de más, ni una de menos.</span></p>
+        <ul class="mt-6 space-y-2 text-sm text-white/60">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Flujo crítico operando día 1</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Integraciones solo donde aportan</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Equipo operando solo al cierre</li>
         </ul>
       </article>
 
       <!-- Pilar 2 -->
-      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
-        <div class="w-12 h-12 rounded-xl grid place-items-center bg-ink text-ivory mb-6">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="6" rx="8" ry="3" stroke="currentColor" stroke-width="2"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" stroke="currentColor" stroke-width="2"/></svg>
+      <article class="reveal card bg-white/[.02] border border-white/10 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-xl grid place-items-center bg-accent/15 text-accent mb-6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3" stroke="currentColor" stroke-width="2"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" stroke="currentColor" stroke-width="2"/></svg>
         </div>
-        <h3 class="font-display text-2xl leading-tight">Datos conectados entre áreas</h3>
-        <p class="mt-4 text-ink/70 leading-relaxed">Base escalable, áreas interconectadas (no silos), reportería precisa y en tiempo real. Una sola fuente de verdad para todo el negocio.</p>
-        <ul class="mt-6 space-y-2 text-sm text-ink/70">
+        <h3 class="font-display text-2xl leading-tight">Datos capturados con criterio</h3>
+        <p class="mt-4 text-white/70 leading-relaxed">Desde el día 1 se mide lo que importa para validar la hipótesis. <span class="text-white font-medium">Nada de data basura, nada de campos "por si acaso".</span></p>
+        <ul class="mt-6 space-y-2 text-sm text-white/60">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Modelo de datos definido pre-código</li>
           <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Trazabilidad end-to-end</li>
-          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Integración con tus sistemas</li>
-          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Gobernanza y seguridad</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Cohortes listas para analizar</li>
         </ul>
       </article>
 
       <!-- Pilar 3 -->
-      <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-8">
-        <div class="w-12 h-12 rounded-xl grid place-items-center bg-ink text-ivory mb-6">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <article class="reveal card bg-white/[.02] border border-white/10 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-xl grid place-items-center bg-accent/15 text-accent mb-6">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
-        <h3 class="font-display text-2xl leading-tight">Métricas en tiempo real</h3>
-        <p class="mt-4 text-ink/70 leading-relaxed">El decisor deja de gobernar por intuición. Dashboards gerenciales, reportes automáticos y modelos predictivos que hablan el lenguaje del C-suite.</p>
-        <ul class="mt-6 space-y-2 text-sm text-ink/70">
-          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Control gerencial en vivo</li>
-          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Alertas operativas</li>
-          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Modelos predictivos</li>
+        <h3 class="font-display text-2xl leading-tight">Dashboards con las métricas que importan</h3>
+        <p class="mt-4 text-white/70 leading-relaxed">Las que definimos en el Discovery, no las que "queden bonitas al final". <span class="text-white font-medium">En tiempo real, operando desde el primer deploy.</span></p>
+        <ul class="mt-6 space-y-2 text-sm text-white/60">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Métricas de validación en vivo</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Lectura para decisor, no para dev</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Alertas si la hipótesis se cae</li>
         </ul>
       </article>
     </div>
 
     <!-- Value line -->
-    <div class="reveal mt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-t border-ink/10 pt-10">
+    <div class="reveal mt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-t border-white/10 pt-10">
       <p class="font-display text-2xl md:text-3xl max-w-3xl leading-snug">
-        "No necesitas más herramientas.<br class="hidden md:block"/> Necesitas <span class="text-accent">arquitectura</span>."
+        "Entregar solo dashboards = Power BI bonito con data inútil. Entregar solo automatización = scripts que no responden ninguna pregunta de negocio. <span class="text-accent">Los tres o ninguno.</span>"
       </p>
-      <a href="#contacto" class="inline-flex items-center gap-2 text-sm font-medium text-ink underline underline-offset-4 decoration-accent">
-        Habla con un arquitecto
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <a href="#contacto" class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-accent whitespace-nowrap">
+        Agenda tu Discovery
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ============== FEATURES (5 capas + metodología) ============== -->
-<section id="metodologia" class="relative bg-ink text-ivory overflow-hidden">
-  <div class="absolute inset-0 bg-grid opacity-40"></div>
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"></div>
-
-  <div class="relative max-w-7xl mx-auto px-6 py-28 md:py-40">
-    <div class="grid md:grid-cols-12 gap-12">
-      <div class="md:col-span-5">
-        <p class="reveal text-xs uppercase tracking-[0.22em] text-white/50">03 · Framework</p>
-        <h2 class="reveal mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
-          Cinco capas. <span class="text-white/50">Un sistema coherente.</span>
-        </h2>
-        <p class="reveal mt-6 text-white/70 leading-relaxed max-w-md">
-          Así es como mapeamos cualquier solución de IA empresarial. Si alguna capa falta, el sistema se cae. Si todas están resueltas, el decisor tiene control total.
-        </p>
-
-        <div class="reveal mt-10 p-6 rounded-2xl border border-white/10 bg-white/[.02]">
-          <p class="text-xs uppercase tracking-wider text-white/50">Principio de independencia</p>
-          <p class="mt-3 text-white/85 leading-relaxed">
-            El cliente debe poder operar sin el consultor. El know-how vive en el sistema, no en personas.
-          </p>
-        </div>
-      </div>
-
-      <div class="md:col-span-7">
-        <ol class="space-y-3">
-          <!-- Layer row template -->
-          <li class="reveal group card border border-white/10 rounded-xl p-5 md:p-6 bg-white/[.02] flex items-start gap-5">
-            <span class="font-display text-3xl text-white/40 w-10 shrink-0">01</span>
-            <div class="flex-1">
-              <div class="flex items-center gap-3">
-                <h3 class="font-semibold text-lg">Backend</h3>
-                <span class="text-[11px] uppercase tracking-wider text-white/40">Infraestructura</span>
-              </div>
-              <p class="mt-1 text-white/65 text-sm">Servidores, APIs e integraciones entre sistemas existentes.</p>
-            </div>
-          </li>
-          <li class="reveal group card border border-white/10 rounded-xl p-5 md:p-6 bg-white/[.02] flex items-start gap-5">
-            <span class="font-display text-3xl text-white/40 w-10 shrink-0">02</span>
-            <div class="flex-1">
-              <div class="flex items-center gap-3">
-                <h3 class="font-semibold text-lg">Frontend</h3>
-                <span class="text-[11px] uppercase tracking-wider text-white/40">Interfaz</span>
-              </div>
-              <p class="mt-1 text-white/65 text-sm">Dashboards, formularios y portales internos pensados para adopción real.</p>
-            </div>
-          </li>
-          <li class="reveal group card border border-accent/30 rounded-xl p-5 md:p-6 bg-accent/[.06] flex items-start gap-5">
-            <span class="font-display text-3xl text-accent/70 w-10 shrink-0">03</span>
-            <div class="flex-1">
-              <div class="flex items-center gap-3">
-                <h3 class="font-semibold text-lg">Data</h3>
-                <span class="text-[11px] uppercase tracking-wider text-accent">El corazón</span>
-              </div>
-              <p class="mt-1 text-white/80 text-sm">Captura, limpieza, clasificación, almacenamiento y trazabilidad. Sin esto, ninguna IA funciona.</p>
-            </div>
-          </li>
-          <li class="reveal group card border border-white/10 rounded-xl p-5 md:p-6 bg-white/[.02] flex items-start gap-5">
-            <span class="font-display text-3xl text-white/40 w-10 shrink-0">04</span>
-            <div class="flex-1">
-              <div class="flex items-center gap-3">
-                <h3 class="font-semibold text-lg">Inteligencia</h3>
-                <span class="text-[11px] uppercase tracking-wider text-white/40">IA aplicada</span>
-              </div>
-              <p class="mt-1 text-white/65 text-sm">Modelos, agentes, NLP y ML predictivo sobre cimientos sólidos. No cosmética.</p>
-            </div>
-          </li>
-          <li class="reveal group card border border-white/10 rounded-xl p-5 md:p-6 bg-white/[.02] flex items-start gap-5">
-            <span class="font-display text-3xl text-white/40 w-10 shrink-0">05</span>
-            <div class="flex-1">
-              <div class="flex items-center gap-3">
-                <h3 class="font-semibold text-lg">Gobernanza</h3>
-                <span class="text-[11px] uppercase tracking-wider text-white/40">Seguridad & compliance</span>
-              </div>
-              <p class="mt-1 text-white/65 text-sm">Protocolos de acceso, seguridad de datos y políticas de uso de IA para equipos que ya usan ChatGPT sin control.</p>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Metodología 8 fases -->
-    <div class="mt-24 md:mt-32">
-      <div class="reveal flex flex-wrap items-end justify-between gap-6 mb-10">
-        <div>
-          <p class="text-xs uppercase tracking-[0.22em] text-white/50">Entrega</p>
-          <h3 class="mt-3 font-display text-3xl md:text-5xl tracking-tightest">Un programa en 8 fases</h3>
-        </div>
-        <p class="text-white/60 max-w-sm text-sm">
-          Puedes contratar desde la Fase 1 ($3K–$5K USD) — bajo riesgo, alto valor de entrada — o el programa completo.
-        </p>
-      </div>
-
-      <div class="reveal grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
-          <div class="text-xs text-accent uppercase tracking-wider">Fase 1 · puerta</div>
-          <div class="mt-2 font-medium">Diagnóstico del caos</div>
-          <div class="mt-3 text-xs text-white/50">$3K–$5K · 2–3 sem</div>
-        </div>
-        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
-          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 2</div>
-          <div class="mt-2 font-medium">Análisis y priorización</div>
-          <div class="mt-3 text-xs text-white/40">Mapa de ROI por intervención</div>
-        </div>
-        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
-          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 3</div>
-          <div class="mt-2 font-medium">Documentación</div>
-          <div class="mt-3 text-xs text-white/40">Captura del know-how actual</div>
-        </div>
-        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
-          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 4</div>
-          <div class="mt-2 font-medium">Diseño de arquitectura</div>
-          <div class="mt-3 text-xs text-white/40">$5K–$10K (fases 2–4)</div>
-        </div>
-        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
-          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 5</div>
-          <div class="mt-2 font-medium">MVP y validación</div>
-          <div class="mt-3 text-xs text-white/40">Validar antes de construir</div>
-        </div>
-        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
-          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 6</div>
-          <div class="mt-2 font-medium">Implementación</div>
-          <div class="mt-3 text-xs text-white/40">$8K–$20K (fases 5–6)</div>
-        </div>
-        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
-          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 7</div>
-          <div class="mt-2 font-medium">Gestión del cambio</div>
-          <div class="mt-3 text-xs text-white/40">Manuales, videos, training</div>
-        </div>
-        <div class="rounded-xl border border-white/10 bg-white/[.02] p-5">
-          <div class="text-xs text-white/50 uppercase tracking-wider">Fase 8</div>
-          <div class="mt-2 font-medium">Seguimiento · 7+ sem</div>
-          <div class="mt-3 text-xs text-white/40">Hasta que sea estable</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============== CASOS / PRUEBA SOCIAL ============== -->
-<section id="casos" class="relative py-28 md:py-40 overflow-hidden">
-  <div class="absolute inset-0 bg-grid-light opacity-70"></div>
+<!-- ============== S4 · 3 MOMENTOS + FRAMEWORK ============== -->
+<section id="metodologia" class="relative py-28 md:py-40 overflow-hidden">
+  <div class="absolute inset-0 bg-grid-light opacity-50"></div>
   <div class="relative max-w-7xl mx-auto px-6">
     <div class="reveal max-w-3xl">
-      <p class="text-xs uppercase tracking-[0.22em] text-muted">04 · Impacto</p>
+      <p class="text-xs uppercase tracking-[0.22em] text-muted">04 · Metodología</p>
       <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
-        El costo del caos <span class="text-muted">no llega como factura.</span>
+        Tres momentos. <span class="text-muted">Precio cerrado. Cero letra chica.</span>
       </h2>
       <p class="mt-6 text-ink/70 text-lg max-w-2xl">
-        Se acumula en horas perdidas, reprocesos, reportes tardíos y decisiones basadas en supuestos. Así es como lo traducimos a números.
+        Puedes contratar desde el Momento 1 — bajo riesgo, alto valor de entrada — o el paquete completo de 90 días. Si en el Discovery vemos que no deberías construirlo, te lo decimos.
       </p>
     </div>
 
-    <!-- Impact grid -->
-    <div class="mt-16 grid lg:grid-cols-3 gap-5">
-      <!-- Featured case -->
-      <article class="reveal lg:col-span-2 relative bg-ink text-ivory rounded-3xl p-10 md:p-12 overflow-hidden">
-        <div class="absolute inset-0 bg-grid opacity-40"></div>
-        <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-accent/20 blur-3xl"></div>
-        <div class="relative">
-          <span class="text-xs uppercase tracking-[0.2em] text-accent">Caso destacado · operaciones</span>
-          <blockquote class="mt-8 font-display text-3xl md:text-4xl leading-tight max-w-2xl">
-            "Pasamos de cerrar el mes en 9 días a <span class="text-accent">cerrarlo en 36 horas</span>. El equipo dejó de trabajar los sábados."
-          </blockquote>
-          <div class="mt-10 flex items-center gap-4">
-            <div class="w-11 h-11 rounded-full bg-white/10 grid place-items-center font-semibold">CFO</div>
-            <div>
-              <div class="text-sm font-medium">CFO · Grupo industrial Latam</div>
-              <div class="text-xs text-white/50">180 colaboradores · 3 unidades de negocio</div>
-            </div>
-          </div>
-          <div class="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
-            <div>
-              <div class="font-display text-3xl">-81%</div>
-              <div class="text-xs text-white/60 mt-1">Errores en reportería</div>
-            </div>
-            <div>
-              <div class="font-display text-3xl">+42h</div>
-              <div class="text-xs text-white/60 mt-1">Semanales liberadas</div>
-            </div>
-            <div>
-              <div class="font-display text-3xl">3.4×</div>
-              <div class="text-xs text-white/60 mt-1">ROI a 6 meses</div>
-            </div>
+    <!-- Timeline 3 momentos -->
+    <ol class="mt-16 grid md:grid-cols-3 gap-5 relative">
+      <!-- línea decorativa desktop -->
+      <div class="hidden md:block absolute top-12 left-[10%] right-[10%] h-px bg-gradient-to-r from-accent/40 via-accent/20 to-accent/40"></div>
+
+      <!-- M1 VER -->
+      <li class="reveal card relative bg-paper border border-ink/10 rounded-3xl p-8">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-accent text-ink grid place-items-center font-display text-lg font-semibold">01</span>
+          <div>
+            <p class="text-[11px] uppercase tracking-wider text-accent">Momento · VER</p>
+            <p class="text-xs text-muted">2 semanas · bajo riesgo</p>
           </div>
         </div>
-      </article>
+        <h3 class="mt-6 font-display text-2xl leading-tight">Discovery del MVP</h3>
+        <p class="mt-3 text-ink/70 leading-relaxed text-sm">Entendemos el negocio, aterrizamos la hipótesis, definimos métricas de validación y diseñamos el MVP mínimo viable. <span class="text-ink font-medium">Go/no-go honesto al cierre.</span></p>
+        <ul class="mt-6 space-y-2 text-sm text-ink/70 border-t border-ink/10 pt-6">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Hipótesis clara + métricas</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>MVP mínimo definido</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Go/no-go honesto</li>
+        </ul>
+        <div class="mt-8 flex items-baseline gap-2">
+          <span class="font-display text-3xl font-semibold">$3K–$5K</span>
+          <span class="text-xs text-muted">USD</span>
+        </div>
+      </li>
 
-      <!-- Side cases -->
-      <div class="flex flex-col gap-5">
-        <article class="reveal card bg-paper border border-ink/10 rounded-3xl p-8">
-          <div class="font-display text-2xl">Retail · 12 tiendas</div>
-          <p class="mt-3 text-ink/70 text-sm leading-relaxed">
-            Centralizamos inventario, ventas y comisiones. El dueño dejó de pedir reportes por WhatsApp.
-          </p>
-          <div class="mt-6 flex items-baseline gap-2">
-            <span class="font-display text-4xl">-30h</span>
-            <span class="text-sm text-muted">/ semana en operativa manual</span>
+      <!-- M2 DISEÑAR -->
+      <li class="reveal card relative bg-paper border border-ink/10 rounded-3xl p-8">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-ink text-ivory grid place-items-center font-display text-lg font-semibold">02</span>
+          <div>
+            <p class="text-[11px] uppercase tracking-wider text-muted">Momento · DISEÑAR</p>
+            <p class="text-xs text-muted">3 semanas</p>
           </div>
-        </article>
-        <article class="reveal card bg-ink text-ivory rounded-3xl p-8">
-          <div class="font-display text-2xl">SaaS B2B · seed</div>
-          <p class="mt-3 text-white/70 text-sm leading-relaxed">
-            Gobernanza de IA y datos en 5 semanas. El equipo dejó de pegar info sensible en ChatGPT.
-          </p>
-          <div class="mt-6 flex items-baseline gap-2">
-            <span class="font-display text-4xl text-accent">100%</span>
-            <span class="text-sm text-white/60">auditable · compliance ready</span>
+        </div>
+        <h3 class="mt-6 font-display text-2xl leading-tight">Blueprint + Prototipo validado</h3>
+        <p class="mt-3 text-ink/70 leading-relaxed text-sm">Arquitectura técnica, modelo de datos, prototipo testeado con 3–5 usuarios reales y business case con ROI. <span class="text-ink font-medium">Confirmas apetito antes de construir.</span></p>
+        <ul class="mt-6 space-y-2 text-sm text-ink/70 border-t border-ink/10 pt-6">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Arquitectura + modelo de datos</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Prototipo con usuarios reales</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Business case con ROI</li>
+        </ul>
+        <div class="mt-8 flex items-baseline gap-2">
+          <span class="font-display text-3xl font-semibold">$5K–$10K</span>
+          <span class="text-xs text-muted">USD</span>
+        </div>
+      </li>
+
+      <!-- M3 CONSTRUIR -->
+      <li class="reveal card relative bg-paper border border-ink/10 rounded-3xl p-8">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-ink text-ivory grid place-items-center font-display text-lg font-semibold">03</span>
+          <div>
+            <p class="text-[11px] uppercase tracking-wider text-muted">Momento · CONSTRUIR</p>
+            <p class="text-xs text-muted">8–12 semanas</p>
           </div>
-        </article>
+        </div>
+        <h3 class="mt-6 font-display text-2xl leading-tight">MVP mínimo en producción</h3>
+        <p class="mt-3 text-ink/70 leading-relaxed text-sm">MVP operando, dashboards en vivo, equipo entrenado, IP del producto 100% transferida. <span class="text-ink font-medium">Y lectura inicial de validación con datos reales.</span></p>
+        <ul class="mt-6 space-y-2 text-sm text-ink/70 border-t border-ink/10 pt-6">
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>MVP en producción + dashboards</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Equipo entrenado, operando solo</li>
+          <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>IP transferida + lectura inicial</li>
+        </ul>
+        <div class="mt-8 flex items-baseline gap-2">
+          <span class="font-display text-3xl font-semibold">$10K–$25K</span>
+          <span class="text-xs text-muted">USD</span>
+        </div>
+      </li>
+    </ol>
+
+    <!-- Paquete 90 días destacado -->
+    <div class="reveal mt-10 relative rounded-3xl border border-accent/30 bg-accent/[.06] p-8 md:p-12 overflow-hidden">
+      <div class="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-accent/20 blur-3xl"></div>
+      <div class="relative grid md:grid-cols-12 gap-8 items-center">
+        <div class="md:col-span-8">
+          <p class="text-[11px] uppercase tracking-[0.22em] text-accent">Paquete completo · recomendado</p>
+          <h3 class="mt-4 font-display text-3xl md:text-4xl leading-tight tracking-tightest">
+            MVP con Criterio en <span class="text-accent">90 días</span>
+          </h3>
+          <p class="mt-4 text-ink/70 max-w-xl leading-relaxed">
+            Los 3 momentos encadenados. MVP mínimo en producción, hipótesis validándose con métricas reales, equipo del cliente operando autónomo, IP del producto 100% transferida.
+          </p>
+        </div>
+        <div class="md:col-span-4 md:text-right">
+          <div class="font-display text-4xl md:text-5xl font-semibold">$25K–$40K</div>
+          <div class="text-sm text-muted mt-1">USD · 13 semanas</div>
+          <a href="#contacto" class="mt-5 btn-primary inline-flex items-center gap-2 bg-ink text-ivory font-semibold px-5 py-3 rounded-full text-sm">
+            Agenda tu Discovery
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
       </div>
     </div>
 
-    <!-- Quote strip -->
-    <div class="reveal mt-16 grid md:grid-cols-3 gap-6">
-      <figure class="p-6 rounded-2xl bg-paper border border-ink/10">
-        <p class="text-ink/80 leading-relaxed">"Dejaron un sistema que cualquiera del equipo puede operar. No quedamos dependiendo de nadie."</p>
-        <figcaption class="mt-4 text-xs text-muted">COO · Construcción</figcaption>
-      </figure>
-      <figure class="p-6 rounded-2xl bg-paper border border-ink/10">
-        <p class="text-ink/80 leading-relaxed">"Hablan en lenguaje de negocio. Entendí el ROI antes de ver una sola pantalla."</p>
-        <figcaption class="mt-4 text-xs text-muted">CEO · Servicios profesionales</figcaption>
-      </figure>
-      <figure class="p-6 rounded-2xl bg-paper border border-ink/10">
-        <p class="text-ink/80 leading-relaxed">"Diagnóstico brutal, honesto. Nos mostraron dolores que llevábamos dos años ignorando."</p>
-        <figcaption class="mt-4 text-xs text-muted">VP Operaciones · Fintech</figcaption>
-      </figure>
+    <!-- Nota Post-MVP -->
+    <p class="reveal mt-6 text-sm text-ink/60 max-w-3xl">
+      <span class="text-ink font-medium">Post-MVP:</span> si la hipótesis valida y decides escalar, conversamos alcance y contrato nuevos. El MVP es un contrato cerrado. Escalar es una conversación nueva — ya con datos reales del mercado, no con supuestos.
+    </p>
+
+    <!-- Framework 5 capas (sub-bloque secundario, dark) -->
+    <div class="reveal mt-24 md:mt-32 rounded-3xl bg-ink text-ivory p-8 md:p-14 overflow-hidden relative">
+      <div class="absolute inset-0 bg-grid opacity-30"></div>
+      <div class="relative grid md:grid-cols-12 gap-10">
+        <div class="md:col-span-5">
+          <p class="text-xs uppercase tracking-[0.22em] text-white/50">Así diseñamos (no cómo vendemos)</p>
+          <h3 class="mt-4 font-display text-3xl md:text-5xl tracking-tightest leading-[1.05]">
+            Cinco capas. <span class="text-white/50">Nada se escapa.</span>
+          </h3>
+          <p class="mt-5 text-white/70 leading-relaxed max-w-md text-sm">
+            Toda solución se mapea internamente en estas 5 capas. <span class="text-white">Data</span> y <span class="text-white">Gobernanza</span> son nuestros diferenciadores vs software factories y freelancers.
+          </p>
+        </div>
+        <div class="md:col-span-7">
+          <ol class="space-y-3">
+            <li class="card border border-white/10 rounded-xl p-5 bg-white/[.02] flex items-start gap-5">
+              <span class="font-display text-2xl text-white/40 w-8 shrink-0">01</span>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 flex-wrap">
+                  <h4 class="font-semibold text-base">Backend</h4>
+                  <span class="text-[11px] uppercase tracking-wider text-white/40">Cimientos</span>
+                </div>
+                <p class="mt-1 text-white/65 text-sm">Bases de datos escalables y servicios serios. No Bubble, no scripts frágiles.</p>
+              </div>
+            </li>
+            <li class="card border border-white/10 rounded-xl p-5 bg-white/[.02] flex items-start gap-5">
+              <span class="font-display text-2xl text-white/40 w-8 shrink-0">02</span>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 flex-wrap">
+                  <h4 class="font-semibold text-base">Frontend</h4>
+                  <span class="text-[11px] uppercase tracking-wider text-white/40">Adopción</span>
+                </div>
+                <p class="mt-1 text-white/65 text-sm">Dashboards, portales y formularios de captura diseñados para que el equipo los use.</p>
+              </div>
+            </li>
+            <li class="card border border-accent/30 rounded-xl p-5 bg-accent/[.06] flex items-start gap-5">
+              <span class="font-display text-2xl text-accent w-8 shrink-0">03</span>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 flex-wrap">
+                  <h4 class="font-semibold text-base">Data</h4>
+                  <span class="text-[11px] uppercase tracking-wider text-accent">Diferenciador</span>
+                </div>
+                <p class="mt-1 text-white/80 text-sm">Captura, limpieza, trazabilidad, cohortes. Sin esto, ninguna validación es seria.</p>
+              </div>
+            </li>
+            <li class="card border border-white/10 rounded-xl p-5 bg-white/[.02] flex items-start gap-5">
+              <span class="font-display text-2xl text-white/40 w-8 shrink-0">04</span>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 flex-wrap">
+                  <h4 class="font-semibold text-base">Inteligencia</h4>
+                  <span class="text-[11px] uppercase tracking-wider text-white/40">Cuando aplica</span>
+                </div>
+                <p class="mt-1 text-white/65 text-sm">IA, modelos y automatizaciones solo donde generan valor real. No por moda.</p>
+              </div>
+            </li>
+            <li class="card border border-accent/30 rounded-xl p-5 bg-accent/[.06] flex items-start gap-5">
+              <span class="font-display text-2xl text-accent w-8 shrink-0">05</span>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 flex-wrap">
+                  <h4 class="font-semibold text-base">Gobernanza</h4>
+                  <span class="text-[11px] uppercase tracking-wider text-accent">ISO 27001 en la firma</span>
+                </div>
+                <p class="mt-1 text-white/80 text-sm">Seguridad, permisos, compliance, logging auditable. Nuestra obsesión.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============== EQUIPO ============== -->
-<section id="equipo" class="relative bg-ink text-ivory py-28 md:py-40 overflow-hidden">
+<!-- ============== S5 · CASO VERIFICAID ============== -->
+<section id="caso" class="relative bg-ink text-ivory py-28 md:py-40 overflow-hidden">
   <div class="absolute inset-0 bg-grid opacity-40"></div>
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"></div>
+  <div class="absolute -right-40 top-0 w-[700px] h-[700px] rounded-full bg-accent/15 blur-3xl pointer-events-none"></div>
+
   <div class="relative max-w-7xl mx-auto px-6">
     <div class="reveal max-w-3xl">
-      <p class="text-xs uppercase tracking-[0.22em] text-white/50">05 · Equipo</p>
+      <p class="text-xs uppercase tracking-[0.22em] text-accent">05 · Caso #1 del método</p>
       <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
-        Senior end-to-end.<br/><span class="text-white/50">Sin capas intermedias.</span>
+        El método no es teoría. <br class="hidden md:block"/><span class="text-accent">Lo validamos levantando VerificaID.</span>
       </h2>
       <p class="mt-6 text-white/70 text-lg max-w-2xl">
-        Hablamos nosotros con el C-suite. Diseñamos nosotros la arquitectura. Implementamos nosotros el sistema. No hay juniors detrás de la cortina.
+        <span class="text-white font-medium">VerificaID</span> es la <span class="text-white font-medium">RegTech peruana</span> que reduce en 70% el trabajo manual del oficial de cumplimiento (KYC/AML) en empresas reguladas. La levantamos <span class="text-white">Paul y Emmanuel</span> usando exactamente los 3 momentos que te vendemos.
+      </p>
+    </div>
+
+    <!-- Mockup dashboard VerificaID -->
+    <div class="reveal mt-16 relative rounded-3xl border border-white/10 bg-gradient-to-b from-white/[.05] to-white/[.02] backdrop-blur p-6 md:p-10 overflow-hidden">
+      <div class="flex items-center justify-between text-xs text-white/50 mb-8 flex-wrap gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+          VerificaID · RegTech Perú · abril 2026
+        </div>
+        <span class="font-mono">verificaid.io / dashboard</span>
+      </div>
+
+      <!-- KPIs principales -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-5 rounded-2xl bg-white/[.03] border border-white/5">
+          <div class="text-[11px] text-white/50 uppercase tracking-wider">Reducción trabajo manual</div>
+          <div class="mt-3 font-display text-4xl font-semibold text-accent">70%</div>
+          <div class="mt-2 text-[11px] text-white/50">oficial de cumplimiento</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-white/[.03] border border-white/5">
+          <div class="text-[11px] text-white/50 uppercase tracking-wider">Onboarding cliente</div>
+          <div class="mt-3 font-display text-4xl font-semibold">3d → 1h</div>
+          <div class="mt-2 text-[11px] text-white/50">antes · ahora</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-white/[.03] border border-white/5">
+          <div class="text-[11px] text-white/50 uppercase tracking-wider">Sprint completion</div>
+          <div class="mt-3 font-display text-4xl font-semibold">87%</div>
+          <div class="mt-2 h-1.5 rounded-full bg-white/10"><div class="h-full w-[87%] rounded-full bg-accent"></div></div>
+        </div>
+        <div class="p-5 rounded-2xl bg-white/[.03] border border-white/5">
+          <div class="text-[11px] text-white/50 uppercase tracking-wider">Design partners activos</div>
+          <div class="mt-3 font-display text-4xl font-semibold">2 <span class="text-accent text-lg">+ 6</span></div>
+          <div class="mt-2 text-[11px] text-white/50">activos · demos en priorización</div>
+        </div>
+      </div>
+
+      <!-- Detalle -->
+      <div class="mt-8 grid md:grid-cols-3 gap-5">
+        <div class="md:col-span-2 p-6 rounded-2xl bg-white/[.03] border border-white/5">
+          <p class="text-[11px] uppercase tracking-wider text-white/50">MVP en producción</p>
+          <h3 class="mt-3 font-display text-2xl leading-tight">Módulo Dashboard + Ficha auditable</h3>
+          <p class="mt-4 text-white/70 text-sm leading-relaxed">
+            Arquitectura event-driven en AWS. Compliance-by-design: logging inmutable, DPA/consent, permisos granulares. <span class="text-white">El MVP validó la hipótesis en producción real</span>, no en slides.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-2 text-[11px]">
+            <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70">AWS event-driven</span>
+            <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70">Logging inmutable</span>
+            <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70">DPA / consent</span>
+            <span class="px-3 py-1 rounded-full bg-accent/15 border border-accent/30 text-accent">ISO 27001 en la firma</span>
+          </div>
+        </div>
+        <div class="p-6 rounded-2xl bg-accent/[.08] border border-accent/30">
+          <p class="text-[11px] uppercase tracking-wider text-accent">Frase de cierre</p>
+          <p class="mt-4 font-display text-xl leading-snug">
+            "Cuando te preguntas '¿funciona esto?' — <span class="text-accent">VerificaID es la respuesta</span>. Es el mismo método, los mismos dos fundadores, ejecutado sobre nuestra propia empresa."
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== S6 · EQUIPO + VERTICALES ============== -->
+<section id="equipo" class="relative py-28 md:py-40 overflow-hidden">
+  <div class="absolute inset-0 bg-grid-light opacity-40"></div>
+  <div class="relative max-w-7xl mx-auto px-6">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.22em] text-muted">06 · Equipo · nuestra principal credencial</p>
+      <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+        Senior end-to-end. <span class="text-muted">24 años combinados construyendo productos reales en LATAM.</span>
+      </h2>
+      <p class="mt-6 text-ink/70 text-lg max-w-2xl">
+        Hablamos nosotros con el C-suite. Diseñamos nosotros la arquitectura. Construimos nosotros el MVP. <span class="text-ink font-medium">No hay juniors detrás de la cortina.</span>
       </p>
     </div>
 
     <div class="mt-16 grid md:grid-cols-3 gap-5">
       <!-- Paul -->
-      <article class="reveal card border border-white/10 rounded-2xl overflow-hidden bg-white/[.02]">
-        <div class="aspect-[4/5] bg-gradient-to-br from-accent/20 via-accent/5 to-transparent relative">
-          <div class="absolute inset-0 ring-dotted opacity-60"></div>
+      <article class="reveal card border border-ink/10 rounded-3xl overflow-hidden bg-paper">
+        <div class="aspect-[4/5] bg-gradient-to-br from-accent/25 via-accent/10 to-transparent relative">
+          <div class="absolute inset-0 ring-dotted opacity-50"></div>
           <div class="absolute inset-0 grid place-items-center">
-            <span class="font-display text-8xl text-white/20">P</span>
+            <span class="font-display text-[9rem] text-ink/15 leading-none">P</span>
+          </div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <span class="text-[11px] uppercase tracking-wider text-ink/60 bg-ivory/70 backdrop-blur px-2 py-1 rounded">Lima · Valencia</span>
           </div>
         </div>
-        <div class="p-6">
-          <h3 class="font-display text-2xl">Paul Vidal</h3>
-          <p class="text-xs uppercase tracking-wider text-accent mt-1">Estrategia · Diagnóstico · Cierre</p>
-          <p class="mt-4 text-sm text-white/70 leading-relaxed">Traduce caos operativo en oportunidades de IA. Se sienta con C-suite y convierte dolor en business case.</p>
+        <div class="p-7">
+          <h3 class="font-display text-2xl leading-tight">Paul Vidal</h3>
+          <p class="text-xs uppercase tracking-wider text-accent mt-1">CEO · Discovery + Cierre comercial</p>
+          <p class="mt-4 text-sm text-ink/70 leading-relaxed">15+ años construyendo productos digitales en LATAM. CEO de <span class="text-ink font-medium">VerificaID</span>, pasó por <span class="text-ink font-medium">Lanzadera 2025</span> (Juan Roig / Mercadona).</p>
+          <ul class="mt-5 space-y-1.5 text-xs text-ink/60 border-t border-ink/10 pt-4">
+            <li>Ex CEO Consulta.pe / Tecactus · 7a 10m</li>
+            <li>Ex CTO SubaStop · 5 años · + Teal.ai</li>
+            <li>Clientes en trayectoria: Movistar, Miraflores, Cobra, Unicon</li>
+            <li class="text-accent font-medium">ISO/IEC 27001:2022 · SCRUM · Growth</li>
+          </ul>
         </div>
       </article>
 
       <!-- Emmanuel -->
-      <article class="reveal card border border-white/10 rounded-2xl overflow-hidden bg-white/[.02]">
+      <article class="reveal card border border-ink/10 rounded-3xl overflow-hidden bg-paper">
         <div class="aspect-[4/5] bg-gradient-to-br from-accent/30 via-accent/10 to-transparent relative">
-          <div class="absolute inset-0 ring-dotted opacity-60"></div>
+          <div class="absolute inset-0 ring-dotted opacity-50"></div>
           <div class="absolute inset-0 grid place-items-center">
-            <span class="font-display text-8xl text-white/20">E</span>
+            <span class="font-display text-[9rem] text-ink/15 leading-none">E</span>
+          </div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <span class="text-[11px] uppercase tracking-wider text-ink/60 bg-ivory/70 backdrop-blur px-2 py-1 rounded">Lima · Buenos Aires</span>
           </div>
         </div>
-        <div class="p-6">
-          <h3 class="font-display text-2xl">Emmanuel Cervera</h3>
-          <p class="text-xs uppercase tracking-wider text-accent mt-1">Arquitectura · Implementación</p>
-          <p class="mt-4 text-sm text-white/70 leading-relaxed">Diseña las 5 capas y construye el sistema. Más de una década llevando producto end-to-end a producción.</p>
+        <div class="p-7">
+          <h3 class="font-display text-2xl leading-tight">Emmanuel Cervera</h3>
+          <p class="text-xs uppercase tracking-wider text-accent mt-1">CTO · Arquitectura + Implementación</p>
+          <p class="mt-4 text-sm text-ink/70 leading-relaxed">9+ años liderando ingeniería y construyendo SaaS. CTO de <span class="text-ink font-medium">VerificaID</span> (event-driven en AWS) y ex Engineering Manager de <span class="text-ink font-medium">Talently</span>.</p>
+          <ul class="mt-5 space-y-1.5 text-xs text-ink/60 border-t border-ink/10 pt-4">
+            <li>Ex EM Talently · 4 años (Dev SR → TL → EM)</li>
+            <li>Ex CTO worldboosting · 5a 10m · Argentina</li>
+            <li>Ex Lead Dev VMC Subastas</li>
+            <li>CRMs y SaaS: Circuito Inmobiliario, MotoboyApp, SerMadre, Wale.pe</li>
+          </ul>
         </div>
       </article>
 
       <!-- Fernanda -->
-      <article class="reveal card border border-white/10 rounded-2xl overflow-hidden bg-white/[.02]">
-        <div class="aspect-[4/5] bg-gradient-to-br from-accent/25 via-accent/5 to-transparent relative">
-          <div class="absolute inset-0 ring-dotted opacity-60"></div>
+      <article class="reveal card border border-ink/10 rounded-3xl overflow-hidden bg-paper">
+        <div class="aspect-[4/5] bg-gradient-to-br from-accent/20 via-accent/5 to-transparent relative">
+          <div class="absolute inset-0 ring-dotted opacity-50"></div>
           <div class="absolute inset-0 grid place-items-center">
-            <span class="font-display text-8xl text-white/20">F</span>
+            <span class="font-display text-[9rem] text-ink/15 leading-none">F</span>
+          </div>
+          <div class="absolute bottom-4 left-4 right-4">
+            <span class="text-[11px] uppercase tracking-wider text-ink/60 bg-ivory/70 backdrop-blur px-2 py-1 rounded">Lima</span>
           </div>
         </div>
-        <div class="p-6">
-          <h3 class="font-display text-2xl">Fernanda Campos</h3>
-          <p class="text-xs uppercase tracking-wider text-accent mt-1">Desarrollo de negocio</p>
-          <p class="mt-4 text-sm text-white/70 leading-relaxed">Abre puertas con C-suite vía LinkedIn orgánico y red directa. Filtra calidad antes de cualquier llamada.</p>
+        <div class="p-7">
+          <h3 class="font-display text-2xl leading-tight">Fernanda Campos</h3>
+          <p class="text-xs uppercase tracking-wider text-accent mt-1">BDR · Apertura comercial</p>
+          <p class="mt-4 text-sm text-ink/70 leading-relaxed">Abre conversaciones con fundadores y C-suite vía LinkedIn orgánico y red directa. <span class="text-ink font-medium">Filtra calidad antes de cualquier llamada con Paul</span> — nada de reuniones de relleno.</p>
+          <ul class="mt-5 space-y-1.5 text-xs text-ink/60 border-t border-ink/10 pt-4">
+            <li>Prospección orgánica + referidos</li>
+            <li>Calificación por fit real, no por ticket</li>
+            <li>Red activa en Real Estate LATAM</li>
+          </ul>
         </div>
       </article>
     </div>
 
-    <!-- Flow line -->
-    <div class="reveal mt-14 p-6 md:p-8 rounded-2xl border border-white/10 bg-white/[.02] flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex flex-wrap items-center gap-3 text-sm text-white/70">
-        <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">Fernanda abre la puerta</span>
-        <svg width="18" height="12" viewBox="0 0 24 12" fill="none" class="text-white/30"><path d="M1 6h22M18 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">Paul diagnostica y cierra</span>
-        <svg width="18" height="12" viewBox="0 0 24 12" fill="none" class="text-white/30"><path d="M1 6h22M18 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <span class="px-3 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent">Emmanuel diseña e implementa</span>
+    <!-- Flow -->
+    <div class="reveal mt-10 p-6 md:p-8 rounded-2xl border border-ink/10 bg-paper flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-3 text-sm text-ink/70">
+        <span class="px-3 py-1.5 rounded-full bg-ivory border border-ink/10">Fernanda abre la puerta</span>
+        <svg width="18" height="12" viewBox="0 0 24 12" fill="none" class="text-ink/30" aria-hidden="true"><path d="M1 6h22M18 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="px-3 py-1.5 rounded-full bg-ivory border border-ink/10">Paul hace el Discovery y cierra</span>
+        <svg width="18" height="12" viewBox="0 0 24 12" fill="none" class="text-ink/30" aria-hidden="true"><path d="M1 6h22M18 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="px-3 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent">Emmanuel diseña y construye</span>
       </div>
-      <span class="text-xs uppercase tracking-wider text-white/40">Un flujo. Una cabeza.</span>
+      <span class="text-xs uppercase tracking-wider text-muted">Un flujo. Una cabeza.</span>
+    </div>
+
+    <!-- Frase clave -->
+    <div class="reveal mt-10 max-w-4xl">
+      <p class="font-display text-2xl md:text-3xl leading-snug">
+        "Cuando un fundador pregunta '<span class="text-muted">¿por qué ustedes?</span>', no respondemos con un deck. Respondemos con <span class="text-accent">VerificaID operando hoy</span> y 24 años combinados de construir productos reales en LATAM."
+      </p>
+    </div>
+
+    <!-- Verticales -->
+    <div class="mt-24 md:mt-32">
+      <div class="reveal max-w-3xl">
+        <p class="text-xs uppercase tracking-[0.22em] text-muted">Verticales prioritarios</p>
+        <h3 class="mt-4 font-display text-3xl md:text-5xl tracking-tightest leading-[1.05]">
+          Donde ya nos tocó el dolor <span class="text-muted">en carne propia.</span>
+        </h3>
+        <p class="mt-5 text-ink/70 max-w-2xl">
+          No somos generalistas. Nos enfocamos en 3 verticales con evidencia directa en los CVs del equipo. Fuera de estos, solo por referido explícito.
+        </p>
+      </div>
+
+      <div class="mt-12 grid md:grid-cols-3 gap-5">
+        <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-7">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-lg bg-accent/15 text-accent grid place-items-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <h4 class="font-display text-xl">RegTech · Compliance · TrustTech</h4>
+          </div>
+          <p class="mt-4 text-sm text-ink/70 leading-relaxed">Fintechs, notarías digitales, inmobiliarias reguladas, financieras que hoy hacen KYC/AML con Excel y paciencia.</p>
+          <ul class="mt-5 text-xs text-ink/60 space-y-1.5 border-t border-ink/10 pt-4">
+            <li><span class="text-ink font-medium">Paul:</span> CEO VerificaID · ISO 27001 · GRC</li>
+            <li><span class="text-ink font-medium">Emmanuel:</span> PEP/PLAFT, RENIEC, KYC, firma digital</li>
+          </ul>
+        </article>
+
+        <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-7">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-lg bg-accent/15 text-accent grid place-items-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="7" width="13" height="10" rx="1" stroke="currentColor" stroke-width="2"/><path d="M15 10h4l3 4v3h-7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="18" r="2" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="18" r="2" stroke="currentColor" stroke-width="2"/></svg>
+            </span>
+            <h4 class="font-display text-xl">Logística · Transporte · Asset Tracking</h4>
+          </div>
+          <p class="mt-4 text-sm text-ink/70 leading-relaxed">Transporte de carga o delivery con procesos manuales que no escalan, sin visibilidad en tiempo real de flotas o entregas.</p>
+          <ul class="mt-5 text-xs text-ink/60 space-y-1.5 border-t border-ink/10 pt-4">
+            <li><span class="text-ink font-medium">Paul:</span> PM Grupo Trancesa + Lead Dev JM Tech (Movistar, Miraflores, Cobra, Unicon)</li>
+            <li><span class="text-ink font-medium">Emmanuel:</span> MotoboyApp · 2 años</li>
+          </ul>
+        </article>
+
+        <article class="reveal card bg-paper border border-ink/10 rounded-2xl p-7">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-lg bg-accent/15 text-accent grid place-items-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            </span>
+            <h4 class="font-display text-xl">Inmobiliaria · Real Estate</h4>
+          </div>
+          <p class="mt-4 text-sm text-ink/70 leading-relaxed">Inmobiliarias con CRMs que no convierten leads, tesorería y conciliación manual entre áreas que no conversan.</p>
+          <ul class="mt-5 text-xs text-ink/60 space-y-1.5 border-t border-ink/10 pt-4">
+            <li><span class="text-ink font-medium">Emmanuel:</span> CRM Circuito Inmobiliario · Laravel end-to-end</li>
+            <li><span class="text-ink font-medium">Fernanda:</span> red activa con contactos del sector</li>
+          </ul>
+        </article>
+      </div>
+
+      <!-- Trust logos marquee -->
+      <div class="reveal mt-12 border-t border-ink/10 pt-10">
+        <p class="text-xs uppercase tracking-[0.22em] text-muted mb-6">Han trabajado en / con · trayectorias del equipo</p>
+        <div class="marquee overflow-hidden">
+          <div class="marquee-track-slow flex items-center gap-16 whitespace-nowrap text-sm font-display text-ink/50">
+            <span>VerificaID</span><span class="text-ink/20">·</span>
+            <span>Lanzadera 2025</span><span class="text-ink/20">·</span>
+            <span>Movistar</span><span class="text-ink/20">·</span>
+            <span>Municipalidad de Miraflores</span><span class="text-ink/20">·</span>
+            <span>Cobra</span><span class="text-ink/20">·</span>
+            <span>Unicon</span><span class="text-ink/20">·</span>
+            <span>Talently</span><span class="text-ink/20">·</span>
+            <span>Consulta.pe</span><span class="text-ink/20">·</span>
+            <span>SubaStop</span><span class="text-ink/20">·</span>
+            <span>worldboosting</span><span class="text-ink/20">·</span>
+            <!-- loop -->
+            <span>VerificaID</span><span class="text-ink/20">·</span>
+            <span>Lanzadera 2025</span><span class="text-ink/20">·</span>
+            <span>Movistar</span><span class="text-ink/20">·</span>
+            <span>Municipalidad de Miraflores</span><span class="text-ink/20">·</span>
+            <span>Cobra</span><span class="text-ink/20">·</span>
+            <span>Unicon</span><span class="text-ink/20">·</span>
+            <span>Talently</span><span class="text-ink/20">·</span>
+            <span>Consulta.pe</span><span class="text-ink/20">·</span>
+            <span>SubaStop</span><span class="text-ink/20">·</span>
+            <span>worldboosting</span><span class="text-ink/20">·</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============== FAQs ============== -->
+<!-- ============== S7 · IP DEL PRODUCTO ============== -->
+<section id="ip" class="relative bg-ink text-ivory py-28 md:py-40 overflow-hidden">
+  <div class="absolute inset-0 bg-grid opacity-40"></div>
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.22em] text-white/50">07 · Propiedad intelectual</p>
+      <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
+        La IP del producto es 100% tuya. <span class="text-accent">Nuestro método es nuestro.</span>
+      </h2>
+      <p class="mt-6 text-white/70 text-lg max-w-2xl">
+        Esta es una objeción real frente a agencias. Por eso la respondemos directamente, <span class="text-white font-medium">firmado desde el Discovery</span>.
+      </p>
+    </div>
+
+    <div class="mt-16 grid md:grid-cols-2 gap-5">
+      <article class="reveal card rounded-3xl border border-accent/30 bg-accent/[.06] p-8 md:p-10">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-accent/20 text-accent grid place-items-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <p class="text-[11px] uppercase tracking-[0.22em] text-accent">Tuyo · 100%</p>
+        </div>
+        <h3 class="mt-5 font-display text-2xl md:text-3xl leading-tight">Código, datos y diseño del MVP</h3>
+        <p class="mt-4 text-white/80 leading-relaxed">
+          Transferido al cierre del engagement. Firmado desde el Discovery para que no exista ambigüedad.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm text-white/75 border-t border-white/10 pt-6">
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Código fuente completo del MVP</li>
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Modelo de datos y datos operativos</li>
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Diseño específico del producto</li>
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Documentación completa + videos</li>
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></span>Credenciales cloud (tu cuenta, tu dominio)</li>
+        </ul>
+      </article>
+
+      <article class="reveal card rounded-3xl border border-white/10 bg-white/[.02] p-8 md:p-10">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-white/10 text-white grid place-items-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L3 7v6c0 5 4 9 9 10 5-1 9-5 9-10V7l-9-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </span>
+          <p class="text-[11px] uppercase tracking-[0.22em] text-white/50">Nuestro · propio</p>
+        </div>
+        <h3 class="mt-5 font-display text-2xl md:text-3xl leading-tight">Método, frameworks y librerías genéricas</h3>
+        <p class="mt-4 text-white/70 leading-relaxed">
+          Propiedad de coherenceLab. Eso es lo que nos permite construir el siguiente MVP con criterio sin reinventar ruedas — ni cobrártelo a ti.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm text-white/65 border-t border-white/10 pt-6">
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-white/40"></span>Metodología de los 3 momentos</li>
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-white/40"></span>Framework interno de 5 capas</li>
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-white/40"></span>Librerías y patrones reutilizables</li>
+          <li class="flex items-start gap-3"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-white/40"></span>Templates de Discovery y Blueprint</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="reveal mt-12 max-w-4xl">
+      <p class="font-display text-2xl md:text-3xl leading-snug">
+        "Si mañana nos vamos, <span class="text-accent">tu producto sigue funcionando y es tuyo</span>. Y si tu hipótesis valida, lo puedes escalar con quien tú elijas."
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== S8 · FAQs ============== -->
 <section id="faqs" class="relative py-28 md:py-40">
   <div class="max-w-5xl mx-auto px-6">
     <div class="reveal max-w-3xl">
-      <p class="text-xs uppercase tracking-[0.22em] text-muted">06 · Dudas frecuentes</p>
+      <p class="text-xs uppercase tracking-[0.22em] text-muted">08 · Dudas frecuentes</p>
       <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
         Lo que preguntan <span class="text-muted">antes de agendar.</span>
       </h2>
@@ -648,100 +1041,115 @@ tailwind.config = {
     <div class="reveal mt-14 divide-y divide-ink/10 border-t border-b border-ink/10">
       <details class="group py-6">
         <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
-          <h3 class="font-display text-xl md:text-2xl leading-snug">¿En qué se diferencian de una agencia de automatizaciones?</h3>
-          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿En qué se diferencian de una software factory o un freelancer?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">No vendemos agentes, chatbots ni workflows sueltos. Diseñamos arquitecturas completas de IA en 5 capas que resuelven el problema estructural, no el síntoma. El entregable es un sistema que funciona sin nosotros.</p>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-3xl">Una software factory te cobra por hora o por feature y te entrega "el MVP que escala desde día 1" — caro y lento. Un freelancer te entrega un prototipo frágil en Bubble. Nosotros construimos el MVP mínimo con <span class="text-ink font-medium">hipótesis, métricas y dashboards definidos antes de programar</span>, lo dejamos en producción, te entrenamos y te transferimos la IP del producto. Si no deberías construirlo, te lo decimos en el Discovery.</p>
       </details>
+
       <details class="group py-6">
         <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
-          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Cuánto cuesta un programa completo?</h3>
-          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Cuánto cuesta el paquete completo?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Empiezas con el Diagnóstico ($3K–$5K USD, 2–3 semanas). Si seguimos, el diseño de arquitectura va de $5K–$10K y la implementación entre $8K–$20K según alcance. Todo desglosado en el business case, sin letra chica.</p>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-3xl">El Discovery (Momento 1) va de <span class="text-ink font-medium">$3K–$5K USD, 2 semanas</span>. Si seguimos, el Blueprint (Momento 2) es $5K–$10K y la Construcción (Momento 3) $10K–$25K. El paquete completo de 90 días va de <span class="text-ink font-medium">$25K–$40K USD</span>. Todo desglosado en el business case. Cero letra chica.</p>
       </details>
+
       <details class="group py-6">
         <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
-          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Qué pasa si ya tenemos un ERP/CRM?</h3>
-          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Por qué "MVP mínimo" y no un MVP que escale desde día 1?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Mejor. La mayoría de nuestros clientes ya tienen herramientas — el problema es que están desconectadas y mal usadas. Conectamos lo que ya tienes antes de proponer nada nuevo.</p>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-3xl">Porque sobre-construir antes de validar la hipótesis es el error más caro. <span class="text-ink font-medium">El MVP es para validar, no para escalar.</span> Si la hipótesis valida, conversamos la V2 como un engagement nuevo — ya con datos reales del mercado, no con supuestos.</p>
       </details>
+
+      <details class="group py-6">
+        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿La IP del producto es mía?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-3xl"><span class="text-ink font-medium">Sí, 100%.</span> Código del MVP, datos, diseño específico, documentación y credenciales se transfieren al cierre. Nuestros frameworks metodológicos y librerías internas genéricas quedan como propiedad de coherenceLab — eso nos permite ser rápidos en el siguiente cliente sin cobrarte por reinventar la rueda.</p>
+      </details>
+
+      <details class="group py-6">
+        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Por qué ustedes y no contratar directo?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-3xl">Contratar 5 personas para 6 meses te cuesta más que nuestro paquete completo y te deja con un equipo que no has validado. Nosotros somos los mismos fundadores de VerificaID ejecutando directamente — <span class="text-ink font-medium">senior end-to-end, sin capas intermedias</span>. Cuando termina el MVP, tu equipo queda entrenado y operando solo.</p>
+      </details>
+
       <details class="group py-6">
         <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
           <h3 class="font-display text-xl md:text-2xl leading-snug">¿Trabajan fuera de Perú?</h3>
-          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Foco inicial en Perú. Atendemos proyectos regionales (Latam) por referido y procesos 100% remotos. Hablamos español, inglés técnico y el lenguaje del C-suite.</p>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-3xl">Foco primario Perú. <span class="text-ink font-medium">España vía Lanzadera</span> (Paul estuvo en la aceleración 2025). LATAM por referidos. Todo 100% remoto con rituales en vivo.</p>
       </details>
+
       <details class="group py-6">
         <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
-          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Qué pasa después de la implementación?</h3>
-          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
+          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Qué pasa después de la entrega?</h3>
+          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60" aria-hidden="true">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
           </span>
         </summary>
-        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Fases 7 y 8: entrenamiento, documentación completa y 7+ semanas de seguimiento hasta que el sistema sea estable. El objetivo es independencia real — tu equipo opera sin el consultor.</p>
-      </details>
-      <details class="group py-6">
-        <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
-          <h3 class="font-display text-xl md:text-2xl leading-snug">¿Qué NO hacen?</h3>
-          <span class="faq-icon shrink-0 mt-1 w-8 h-8 grid place-items-center rounded-full border border-ink/20 text-ink/60">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </span>
-        </summary>
-        <p class="mt-4 text-ink/70 leading-relaxed max-w-2xl">Automatizaciones sueltas sin diagnóstico. Chatbots cosméticos. Proyectos sin business case. Soporte 24/7. Branding o diseño gráfico. Si no podemos generar impacto medible, te lo decimos antes de cobrarte.</p>
+        <p class="mt-4 text-ink/70 leading-relaxed max-w-3xl">4–6 semanas de acompañamiento post-lanzamiento, lectura inicial de validación (qué dicen los datos), documentación completa y videos. <span class="text-ink font-medium">Si nos necesitas para siempre, fallamos.</span> El objetivo es tu independencia.</p>
       </details>
     </div>
   </div>
 </section>
 
 <!-- ============== CTA FINAL + FORM ============== -->
-<section id="contacto" class="relative bg-ink text-ivory overflow-hidden">
+<section id="contacto" class="relative bg-ink text-ivory overflow-hidden noise">
   <div class="absolute inset-0 bg-grid opacity-30"></div>
   <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full bg-accent/10 blur-3xl"></div>
 
   <div class="relative max-w-6xl mx-auto px-6 py-28 md:py-40">
     <div class="grid lg:grid-cols-12 gap-12">
       <div class="lg:col-span-5 reveal">
-        <p class="text-xs uppercase tracking-[0.22em] text-white/50">07 · Empezar</p>
+        <p class="text-xs uppercase tracking-[0.22em] text-accent">Empezar · Momento 1</p>
         <h2 class="mt-4 font-display text-4xl md:text-6xl tracking-tightest leading-[1.02]">
-          Empieza por el diagnóstico. <span class="text-accent">2 semanas.</span>
+          Empieza por el Discovery. <span class="text-accent">2 semanas.</span>
         </h2>
         <p class="mt-6 text-white/70 leading-relaxed max-w-md">
-          En 2 sesiones entendemos el caos operativo, cuantificamos el costo real y te entregamos un mapa de prioridades con ROI. Sin compromisos de continuidad.
+          Discovery primero. Si no deberías construirlo, te lo decimos. Si hay fit real, salimos con hipótesis clara, métricas de validación y el MVP mínimo definido. Sin compromisos de continuidad.
         </p>
 
         <ul class="mt-10 space-y-4">
           <li class="flex items-start gap-3">
             <span class="mt-1 w-5 h-5 rounded-full bg-accent/20 text-accent grid place-items-center">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <span class="text-white/85">Reuniones con decisores + operativos clave</span>
+            <span class="text-white/85">Hipótesis clara + métricas de validación</span>
           </li>
           <li class="flex items-start gap-3">
             <span class="mt-1 w-5 h-5 rounded-full bg-accent/20 text-accent grid place-items-center">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <span class="text-white/85">Auditoría completa: procesos, datos, herramientas</span>
+            <span class="text-white/85">MVP mínimo viable definido con criterio</span>
           </li>
           <li class="flex items-start gap-3">
             <span class="mt-1 w-5 h-5 rounded-full bg-accent/20 text-accent grid place-items-center">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <span class="text-white/85">Mapa priorizado con ROI estimado por intervención</span>
+            <span class="text-white/85">Go/no-go honesto al cierre del Discovery</span>
           </li>
         </ul>
 
-        <div class="mt-12 pt-8 border-t border-white/10 flex items-center gap-6 text-sm text-white/60">
+        <div class="mt-12 pt-8 border-t border-white/10 flex items-center gap-6 text-sm text-white/60 flex-wrap">
           <div>
             <div class="text-white/40 text-xs uppercase tracking-wider">Escríbenos</div>
             <a href="mailto:hola@coerence.tech" class="mt-1 block text-white hover:text-accent">hola@coerence.tech</a>
@@ -749,66 +1157,67 @@ tailwind.config = {
           <div class="h-8 w-px bg-white/10"></div>
           <div>
             <div class="text-white/40 text-xs uppercase tracking-wider">Base</div>
-            <div class="mt-1 text-white">Lima, Perú · Remoto Latam</div>
+            <div class="mt-1 text-white">Lima, Perú · España · LATAM</div>
           </div>
         </div>
       </div>
 
       <!-- Form -->
       <div class="lg:col-span-7 reveal">
-        <form id="contactForm" class="relative bg-white/[.03] backdrop-blur border border-white/10 rounded-3xl p-6 md:p-10" novalidate>
+        <form id="contactForm" class="relative bg-white/[.03] backdrop-blur border border-white/10 rounded-3xl p-6 md:p-10" novalidate aria-label="Formulario de agenda de Discovery">
           <div class="grid md:grid-cols-2 gap-5">
             <div>
               <label for="nombre" class="text-xs uppercase tracking-wider text-white/60">Nombre</label>
-              <input id="nombre" name="nombre" type="text" required
+              <input id="nombre" name="nombre" type="text" required autocomplete="name"
                 class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30" placeholder="Tu nombre" />
               <p class="err text-xs text-red-400 mt-1 hidden">Ingresa tu nombre.</p>
             </div>
             <div>
-              <label for="empresa" class="text-xs uppercase tracking-wider text-white/60">Empresa</label>
-              <input id="empresa" name="empresa" type="text" required
-                class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30" placeholder="Razón social o marca" />
-              <p class="err text-xs text-red-400 mt-1 hidden">Ingresa tu empresa.</p>
+              <label for="empresa" class="text-xs uppercase tracking-wider text-white/60">Empresa / Proyecto</label>
+              <input id="empresa" name="empresa" type="text" required autocomplete="organization"
+                class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30" placeholder="Razón social o nombre del proyecto" />
+              <p class="err text-xs text-red-400 mt-1 hidden">Ingresa tu empresa o proyecto.</p>
             </div>
             <div>
               <label for="rol" class="text-xs uppercase tracking-wider text-white/60">Rol</label>
               <select id="rol" name="rol" required
                 class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white">
                 <option value="" class="bg-ink">Selecciona tu rol</option>
-                <option class="bg-ink">CEO / Owner</option>
-                <option class="bg-ink">COO / Operaciones</option>
-                <option class="bg-ink">CFO / Finanzas</option>
-                <option class="bg-ink">CTO / Tecnología</option>
+                <option class="bg-ink">Fundador / CEO</option>
+                <option class="bg-ink">Co-fundador</option>
+                <option class="bg-ink">Director de Innovación / Nuevos Productos</option>
+                <option class="bg-ink">CTO</option>
                 <option class="bg-ink">Otro</option>
               </select>
               <p class="err text-xs text-red-400 mt-1 hidden">Selecciona un rol.</p>
             </div>
             <div>
               <label for="email" class="text-xs uppercase tracking-wider text-white/60">Email corporativo</label>
-              <input id="email" name="email" type="email" required
+              <input id="email" name="email" type="email" required autocomplete="email"
                 class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30" placeholder="tu@empresa.com" />
               <p class="err text-xs text-red-400 mt-1 hidden">Ingresa un email válido.</p>
             </div>
             <div class="md:col-span-2">
-              <label for="mensaje" class="text-xs uppercase tracking-wider text-white/60">Cuéntanos el caos que quieres resolver</label>
-              <textarea id="mensaje" name="mensaje" rows="4" required
+              <label for="hipotesis" class="text-xs uppercase tracking-wider text-white/60">En una línea, ¿cuál es la hipótesis que quieres validar?</label>
+              <textarea id="hipotesis" name="hipotesis" rows="3" required
                 class="mt-2 w-full bg-transparent border-b border-white/15 focus:border-accent focus:outline-none py-2 text-white placeholder-white/30 resize-none"
-                placeholder="Dónde pierdes tiempo, qué áreas no se hablan, qué métrica necesitas ver en tiempo real…"></textarea>
-              <p class="err text-xs text-red-400 mt-1 hidden">Cuéntanos un poco más.</p>
+                placeholder="Ej: Creo que las notarías de Lima pagarían $500/mes por automatizar KYC si les ahorra 8 horas/semana…"></textarea>
+              <p class="err text-xs text-red-400 mt-1 hidden">Cuéntanos tu hipótesis en al menos 10 caracteres.</p>
             </div>
           </div>
 
           <div class="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p class="text-xs text-white/50 max-w-sm">Respondemos en menos de 24h hábiles. Solo agendamos si vemos fit real — no hacemos reuniones de relleno.</p>
             <button type="submit" class="btn-primary inline-flex items-center justify-center gap-2 bg-accent text-ink font-semibold px-6 py-3.5 rounded-full text-sm w-full sm:w-auto">
-              <span>Agendar diagnóstico</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Agenda tu Discovery</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
 
           <!-- success state -->
-          <div id="formSuccess" class="hidden mt-6 p-5 rounded-xl border border-accent/30 bg-accent/10 text-accent">
-            ✓ Recibimos tu mensaje. Te escribimos en menos de 24h hábiles.
+          <div id="formSuccess" class="hidden mt-6 p-5 rounded-xl border border-accent/30 bg-accent/10 text-accent flex items-start gap-3" role="status" aria-live="polite">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="shrink-0 mt-0.5" aria-hidden="true"><path d="M5 12l5 5 9-11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Recibimos tu mensaje. Si vemos fit real, <span class="font-semibold">Paul te escribe en menos de 24h hábiles</span> para agendar el Discovery.</span>
           </div>
         </form>
       </div>
@@ -824,26 +1233,32 @@ tailwind.config = {
         <img src="coerens_icon.svg" alt="" class="h-7 w-auto" style="filter: brightness(0) invert(1);" />
         <span class="font-display text-white text-lg">coherence<span class="text-accent">Lab</span></span>
       </div>
-      <p class="mt-4 text-sm max-w-sm">Arquitectura de IA para operaciones. No vendemos automatizaciones, vendemos sistemas.</p>
+      <p class="mt-4 text-sm max-w-sm">MVPs con criterio. Mínimos, simples, que validan tu hipótesis en 90 días. Mismo método con el que levantamos VerificaID.</p>
     </div>
     <div class="flex flex-col gap-2 text-sm">
       <span class="text-white/40 uppercase text-xs tracking-wider mb-1">Navegación</span>
-      <a href="#beneficios" class="hover:text-white">Sistema</a>
+      <a href="#problema" class="hover:text-white">El problema</a>
+      <a href="#sistema" class="hover:text-white">Sistema</a>
       <a href="#metodologia" class="hover:text-white">Metodología</a>
+      <a href="#caso" class="hover:text-white">Caso VerificaID</a>
       <a href="#equipo" class="hover:text-white">Equipo</a>
-      <a href="#contacto" class="hover:text-white">Contacto</a>
+      <a href="#faqs" class="hover:text-white">FAQs</a>
     </div>
     <div class="flex flex-col gap-2 text-sm">
       <span class="text-white/40 uppercase text-xs tracking-wider mb-1">Contacto</span>
       <a href="mailto:hola@coerence.tech" class="hover:text-white">hola@coerence.tech</a>
-      <span>Lima, Perú</span>
+      <span>Lima, Perú · España · LATAM</span>
       <span>coerence.tech</span>
+      <a href="https://www.linkedin.com/company/coherencelab" rel="noopener" target="_blank" class="hover:text-white inline-flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+          LinkedIn
+      </a>
     </div>
   </div>
   <div class="border-t border-white/5">
     <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between text-xs text-white/40 gap-3">
       <span>© <span id="year"></span> coherenceLab. Todos los derechos reservados.</span>
-      <span>"No compito por precio, compito por criterio."</span>
+      <span>"Competimos por criterio, no por precio."</span>
     </div>
   </div>
 </footer>
@@ -866,11 +1281,11 @@ tailwind.config = {
     form.querySelectorAll('.err').forEach(el => el.classList.add('hidden'));
 
     const fields = [
-      { id: 'nombre',  test: v => v.trim().length >= 2 },
-      { id: 'empresa', test: v => v.trim().length >= 2 },
-      { id: 'rol',     test: v => v.trim().length > 0 },
-      { id: 'email',   test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
-      { id: 'mensaje', test: v => v.trim().length >= 10 },
+      { id: 'nombre',    test: v => v.trim().length >= 2 },
+      { id: 'empresa',   test: v => v.trim().length >= 2 },
+      { id: 'rol',       test: v => v.trim().length > 0 },
+      { id: 'email',     test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
+      { id: 'hipotesis', test: v => v.trim().length >= 10 },
     ];
     fields.forEach(f => {
       const el = document.getElementById(f.id);
@@ -886,7 +1301,7 @@ tailwind.config = {
     if (valid) {
       document.getElementById('formSuccess').classList.remove('hidden');
       form.reset();
-      setTimeout(() => document.getElementById('formSuccess').classList.add('hidden'), 6000);
+      setTimeout(() => document.getElementById('formSuccess').classList.add('hidden'), 8000);
     }
   });
 </script>
